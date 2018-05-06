@@ -23,6 +23,12 @@
     <ClInclude Include="pushrelabel.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Dinic.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="input01">
+      <Filter>리소스 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
