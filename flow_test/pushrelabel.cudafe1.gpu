@@ -1898,50 +1898,48 @@ __cuda_local_var_212337_8_non_const_curLowestNeighbor = i;
 #line 69 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 }
 #line 70 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-i++;
-#line 71 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 } }
-#line 73 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 72 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 if (((height[__cuda_local_var_212330_6_non_const_u]) > __cuda_local_var_212338_8_non_const_neighborMinHeight) && (__cuda_local_var_212337_8_non_const_curLowestNeighbor != (-1)))
+#line 72 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+{
 #line 73 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-{
+ int __cuda_local_var_212354_9_non_const_delta;
 #line 74 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
- int __cuda_local_var_212355_9_non_const_delta;
+ int __cuda_local_var_212355_9_non_const_v;
 #line 75 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
- int __cuda_local_var_212356_9_non_const_v;
-#line 76 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
- int __cuda_local_var_212357_9_non_const_rev;
-#line 74 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-__cuda_local_var_212355_9_non_const_delta = ((__cuda_local_var_212335_7_non_const_curExcess < ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).cap)) ? __cuda_local_var_212335_7_non_const_curExcess : ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).cap));
-#line 74 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+ int __cuda_local_var_212356_9_non_const_rev;
+#line 73 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+__cuda_local_var_212354_9_non_const_delta = ((__cuda_local_var_212335_7_non_const_curExcess < ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).cap)) ? __cuda_local_var_212335_7_non_const_curExcess : ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).cap));
+#line 73 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 ;
+#line 74 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+__cuda_local_var_212355_9_non_const_v = ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).to);
 #line 75 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-__cuda_local_var_212356_9_non_const_v = ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).to);
+__cuda_local_var_212356_9_non_const_rev = ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).rev);
 #line 76 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-__cuda_local_var_212357_9_non_const_rev = ((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).rev);
+_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicAddEPii((&((graph[((startIdx[__cuda_local_var_212355_9_non_const_v]) + __cuda_local_var_212356_9_non_const_rev)]).cap)), __cuda_local_var_212354_9_non_const_delta);
 #line 77 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicAddEPii((&((graph[((startIdx[__cuda_local_var_212356_9_non_const_v]) + __cuda_local_var_212357_9_non_const_rev)]).cap)), __cuda_local_var_212355_9_non_const_delta);
+_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicSubEPii((&((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).cap)), __cuda_local_var_212354_9_non_const_delta);
 #line 78 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicSubEPii((&((graph[((startIdx[__cuda_local_var_212330_6_non_const_u]) + __cuda_local_var_212337_8_non_const_curLowestNeighbor)]).cap)), __cuda_local_var_212355_9_non_const_delta);
+_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicAddEPii((excessFlow + __cuda_local_var_212355_9_non_const_v), __cuda_local_var_212354_9_non_const_delta);
 #line 79 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicAddEPii((excessFlow + __cuda_local_var_212356_9_non_const_v), __cuda_local_var_212355_9_non_const_delta);
+_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicSubEPii((excessFlow + __cuda_local_var_212330_6_non_const_u), __cuda_local_var_212354_9_non_const_delta);
 #line 80 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicSubEPii((excessFlow + __cuda_local_var_212330_6_non_const_u), __cuda_local_var_212355_9_non_const_delta);
-#line 81 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 }
-#line 82 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 81 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 else 
-#line 82 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 81 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 {
-#line 83 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 82 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 (height[__cuda_local_var_212330_6_non_const_u]) = (__cuda_local_var_212338_8_non_const_neighborMinHeight + 1);
+#line 83 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+}
 #line 84 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 }
 #line 85 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
-}
-#line 86 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 } } 
-#line 87 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 86 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 }}
 #line 415 "c:\\program files\\nvidia gpu computing toolkit\\cuda\\v9.1\\include\\vector_types.h"
 ___device__( __no_sc__) __inline__ void _ZN4dim3C1Ejjj( struct dim3 *const this, 

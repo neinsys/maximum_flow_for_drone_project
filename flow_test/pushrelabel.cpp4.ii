@@ -211486,7 +211486,6 @@ __declspec(__global__) void push_relabel_kernel(edge* graph, int* startIdx, int*
 					neighborMinHeight = tempHeight;
 					curLowestNeighbor = i;
 				}
-				i++;
 			}
 
 			if (height[u] > neighborMinHeight && curLowestNeighbor != -1) {
@@ -211547,6 +211546,7 @@ __declspec(__host__) void global_relabel_cpu(edge* graph, int* startIdx, int* he
 		if (!marked[i] && height[i] == n) {
 			marked[i] = true;
 			*excessTotal -= excessFlow[i];
+			excessFlow[i] = 0;
 		}
 	}
 }
@@ -211582,8 +211582,6 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	int* excessFlow_h = (int*)malloc(sizeof(int)*n);
 	int* height_h = (int*)malloc(sizeof(int)*n);
 	int* startIdx_h = (int*)malloc(sizeof(int)*(n + 1));
-	int netFlowOutS_h = 0;
-	int netFlowInT_h = 0;
 	edge* graph_h;
 	bool* marked = (bool*)malloc(sizeof(bool)*n);
 	int excessTotal = 0;
@@ -211593,14 +211591,10 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	int* height_d;
 	edge* graph_d;
 	int* startIdx_d;
-	int* netFlowOutS_d;
-	int* netFlowInT_d;
 
-	{ cudaAssert((cudaMalloc((void**)&excessFlow_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 180); };
-	{ cudaAssert((cudaMalloc((void**)&height_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 181); };
-	{ cudaAssert((cudaMalloc((void**)&startIdx_d, sizeof(int)*(n + 1))), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 182); };
-	{ cudaAssert((cudaMalloc((void**)&netFlowOutS_d, sizeof(int))), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 183); };
-	{ cudaAssert((cudaMalloc((void**)&netFlowInT_d, sizeof(int))), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 184); };
+	{ cudaAssert((cudaMalloc((void**)&excessFlow_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 176); };
+	{ cudaAssert((cudaMalloc((void**)&height_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 177); };
+	{ cudaAssert((cudaMalloc((void**)&startIdx_d, sizeof(int)*(n + 1))), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 178); };
 
 	int sum = 0;
 
@@ -211609,10 +211603,10 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 		sum += graph.Graph[i].size();
 		startIdx_h[i + 1] = sum;
 	}
-	{ cudaAssert((cudaMemcpy(startIdx_d, startIdx_h, sizeof(int)*(n + 1), cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 193); };
+	{ cudaAssert((cudaMemcpy(startIdx_d, startIdx_h, sizeof(int)*(n + 1), cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 187); };
 
 	graph_h = (edge*)malloc(sizeof(edge)*sum);
-	{ cudaAssert((cudaMalloc((void**)&graph_d, sizeof(edge)*sum)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 196); };
+	{ cudaAssert((cudaMalloc((void**)&graph_d, sizeof(edge)*sum)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 190); };
 
 	
 	init_flow(&graph, height_h, excessFlow_h, &excessTotal, marked, n, source, sink);
@@ -211623,10 +211617,8 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 			graph_h[startIdx_h[i] + j] = graph.Graph[i][j];
 		}
 	}
-	{ cudaAssert((cudaMemcpy(graph_d, graph_h, sizeof(edge)*sum, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 207); };
-	{ cudaAssert((cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int)*n, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 208); };
-	{ cudaAssert((cudaMemcpy(netFlowOutS_d, &netFlowOutS_h, sizeof(int), cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 209); };
-	{ cudaAssert((cudaMemcpy(netFlowInT_d, &netFlowInT_h, sizeof(int), cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 210); };
+	{ cudaAssert((cudaMemcpy(graph_d, graph_h, sizeof(edge)*sum, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 201); };
+	{ cudaAssert((cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int)*n, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 202); };
 
 	while (excessFlow_h[source] + excessFlow_h[sink] < excessTotal) {
 		
@@ -211638,11 +211630,9 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 		push_relabel_kernel <<<numBlocks, threadsPerBlock >>> (graph_d, startIdx_d, height_d, excessFlow_d, n, source, sink);
 
 		
-		{ cudaAssert((cudaMemcpy(graph_h, graph_d, sizeof(edge)*sum, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 222); };
-		{ cudaAssert((cudaMemcpy(height_h, height_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 223); };
-		{ cudaAssert((cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 224); };
-		{ cudaAssert((cudaMemcpy(&netFlowOutS_h, netFlowOutS_d, sizeof(int), cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 225); };
-		{ cudaAssert((cudaMemcpy(&netFlowInT_h, netFlowInT_d, sizeof(int), cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 226); };
+		{ cudaAssert((cudaMemcpy(graph_h, graph_d, sizeof(edge)*sum, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 214); };
+		{ cudaAssert((cudaMemcpy(height_h, height_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 215); };
+		{ cudaAssert((cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 216); };
 
 		
 		global_relabel_cpu(graph_h, startIdx_h, height_h, excessFlow_h, &excessTotal, marked, n, source, sink);

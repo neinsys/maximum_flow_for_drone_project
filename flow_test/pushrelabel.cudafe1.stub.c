@@ -11,7 +11,7 @@ void __device_stub__Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii(edge *__
 void push_relabel_kernel( edge *__cuda_0,int *__cuda_1,int *__cuda_2,int *__cuda_3,int __cuda_4,int __cuda_5,int __cuda_6)
 #line 46 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 {__device_stub__Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii( __cuda_0,__cuda_1,__cuda_2,__cuda_3,__cuda_4,__cuda_5,__cuda_6);
-#line 87 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 86 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 }
 #line 1 "./pushrelabel.cudafe1.stub.c"
 static void __nv_cudaEntityRegisterCallback( void **__T3) {  __nv_dummy_param_ref(__T3); __nv_save_fatbinhandle_for_managed_rt(__T3); __cudaRegisterEntry(__T3, ((void ( *)(edge *, int *, int *, int *, int, int, int))push_relabel_kernel), _Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii, (-1)); }

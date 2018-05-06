@@ -154,7 +154,7 @@ func_end2:
 )
 {
 	.reg .pred 	%p<42>;
-	.reg .b32 	%r<77>;
+	.reg .b32 	%r<76>;
 	.reg .f64 	%fd<2>;
 	.reg .b64 	%rd<77>;
 
@@ -169,20 +169,20 @@ func_begin3:
 	ld.param.u64 	%rd3, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_1];
 	ld.param.u64 	%rd4, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_2];
 	ld.param.u64 	%rd5, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_3];
-	ld.param.u32 	%r23, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_4];
-	ld.param.u32 	%r24, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_5];
-	ld.param.u32 	%r25, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_6];
+	ld.param.u32 	%r22, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_4];
+	ld.param.u32 	%r23, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_5];
+	ld.param.u32 	%r24, [_Z19push_relabel_kernelPN9flowGraph4edgeEPiS2_S2_iii_param_6];
 func_exec_begin3:
 	.loc	1 47 12
 tmp6:
-	mov.u32 	%r26, %ntid.x;
-	mov.u32 	%r27, %ctaid.x;
-	mul.lo.s32 	%r28, %r26, %r27;
-	mov.u32 	%r29, %tid.x;
-	add.s32 	%r30, %r28, %r29;
+	mov.u32 	%r25, %ntid.x;
+	mov.u32 	%r26, %ctaid.x;
+	mul.lo.s32 	%r27, %r25, %r26;
+	mov.u32 	%r28, %tid.x;
+	add.s32 	%r29, %r27, %r28;
 tmp7:
 	.loc	1 49 8
-	mov.b32 	%r1, %r30;
+	mov.b32 	%r1, %r29;
 tmp8:
 	.loc	1 50 2
 	setp.lt.s32	%p14, %r1, 0;
@@ -192,7 +192,7 @@ tmp8:
 	bra.uni 	BB3_1;
 
 BB3_1:
-	setp.ge.s32	%p1, %r1, %r23;
+	setp.ge.s32	%p1, %r1, %r22;
 	mov.pred 	%p36, %p1;
 
 BB3_2:
@@ -203,7 +203,7 @@ BB3_2:
 	bra.uni 	BB3_3;
 
 BB3_3:
-	setp.eq.s32	%p3, %r1, %r25;
+	setp.eq.s32	%p3, %r1, %r24;
 	mov.pred 	%p37, %p3;
 
 BB3_4:
@@ -214,7 +214,7 @@ BB3_4:
 	bra.uni 	BB3_5;
 
 BB3_5:
-	setp.eq.s32	%p5, %r1, %r24;
+	setp.eq.s32	%p5, %r1, %r23;
 	mov.pred 	%p38, %p5;
 
 BB3_6:
@@ -230,21 +230,21 @@ tmp9:
 tmp10:
 
 BB3_8:
-	mov.u32 	%r31, 150;
+	mov.u32 	%r30, 150;
 	.loc	1 52 12
-	mov.b32 	%r2, %r31;
+	mov.b32 	%r2, %r30;
 tmp11:
-	mov.u32 	%r32, 0;
+	mov.u32 	%r31, 0;
 	.loc	1 53 13
 tmp12:
-	mov.b32 	%r3, %r32;
+	mov.b32 	%r3, %r31;
 tmp13:
-	mov.u32 	%r70, %r3;
+	mov.u32 	%r69, %r3;
 tmp14:
 
 BB3_9:
 	.loc	1 53 2
-	mov.u32 	%r4, %r70;
+	mov.u32 	%r4, %r69;
 tmp15:
 	setp.lt.s32	%p18, %r4, %r2;
 	not.pred 	%p19, %p18;
@@ -257,8 +257,8 @@ tmp16:
 	cvt.s64.s32	%rd6, %r1;
 	shl.b64 	%rd7, %rd6, 2;
 	add.s64 	%rd8, %rd5, %rd7;
-	ld.u32 	%r33, [%rd8];
-	mov.b32 	%r5, %r33;
+	ld.u32 	%r32, [%rd8];
+	mov.b32 	%r5, %r32;
 tmp17:
 	.loc	1 55 3
 	setp.gt.s32	%p21, %r5, 0;
@@ -272,8 +272,8 @@ BB3_11:
 	cvt.s64.s32	%rd9, %r1;
 	shl.b64 	%rd10, %rd9, 2;
 	add.s64 	%rd11, %rd4, %rd10;
-	ld.u32 	%r34, [%rd11];
-	setp.lt.s32	%p7, %r34, %r23;
+	ld.u32 	%r33, [%rd11];
+	setp.lt.s32	%p7, %r33, %r22;
 	mov.pred 	%p39, %p7;
 
 BB3_12:
@@ -283,10 +283,10 @@ BB3_12:
 	bra.uni 	BB3_13;
 
 BB3_13:
-	mov.u32 	%r35, -1;
+	mov.u32 	%r34, -1;
 	.loc	1 56 26
 tmp18:
-	mov.b32 	%r6, %r35;
+	mov.b32 	%r6, %r34;
 tmp19:
 	mov.u64 	%rd12, 9218868437227405312;
 	.loc	1 57 34
@@ -306,38 +306,38 @@ tmp19:
 	
 	//{
 	}// Callseq End 2
-	cvt.rzi.s32.f64	%r36, %fd1;
-	div.s32 	%r7, %r36, 2;
+	cvt.rzi.s32.f64	%r35, %fd1;
+	div.s32 	%r7, %r35, 2;
 tmp20:
 	.loc	1 61 13
-	add.s32 	%r37, %r1, 1;
-	cvt.s64.s32	%rd13, %r37;
+	add.s32 	%r36, %r1, 1;
+	cvt.s64.s32	%rd13, %r36;
 	shl.b64 	%rd14, %rd13, 2;
 	add.s64 	%rd15, %rd3, %rd14;
-	ld.u32 	%r38, [%rd15];
+	ld.u32 	%r37, [%rd15];
 	cvt.s64.s32	%rd16, %r1;
 	shl.b64 	%rd17, %rd16, 2;
 	add.s64 	%rd18, %rd3, %rd17;
-	ld.u32 	%r39, [%rd18];
-	sub.s32 	%r8, %r38, %r39;
+	ld.u32 	%r38, [%rd18];
+	sub.s32 	%r8, %r37, %r38;
 tmp21:
-	mov.u32 	%r40, 0;
+	mov.u32 	%r39, 0;
 	.loc	1 62 15
 tmp22:
-	mov.b32 	%r9, %r40;
+	mov.b32 	%r9, %r39;
 tmp23:
-	mov.u32 	%r71, %r6;
+	mov.u32 	%r70, %r6;
 tmp24:
-	mov.u32 	%r72, %r7;
+	mov.u32 	%r71, %r7;
 tmp25:
-	mov.u32 	%r73, %r9;
+	mov.u32 	%r72, %r9;
 tmp26:
 
 BB3_14:
 	.loc	1 62 4
-	mov.u32 	%r12, %r73;
-	mov.u32 	%r11, %r72;
-	mov.u32 	%r10, %r71;
+	mov.u32 	%r12, %r72;
+	mov.u32 	%r11, %r71;
+	mov.u32 	%r10, %r70;
 tmp27:
 	setp.lt.s32	%p24, %r12, %r8;
 tmp28:
@@ -351,22 +351,22 @@ tmp29:
 	cvt.s64.s32	%rd69, %r1;
 	shl.b64 	%rd70, %rd69, 2;
 	add.s64 	%rd71, %rd3, %rd70;
-	ld.u32 	%r64, [%rd71];
-	add.s32 	%r65, %r64, %r12;
-	cvt.s64.s32	%rd72, %r65;
+	ld.u32 	%r63, [%rd71];
+	add.s32 	%r64, %r63, %r12;
+	cvt.s64.s32	%rd72, %r64;
 	mul.lo.s64 	%rd73, %rd72, 12;
 	add.s64 	%rd1, %rd2, %rd73;
 tmp30:
 	.loc	1 64 12
-	ld.u32 	%r66, [%rd1];
-	mov.b32 	%r67, %r66;
+	ld.u32 	%r65, [%rd1];
+	mov.b32 	%r66, %r65;
 tmp31:
 	.loc	1 65 20
-	cvt.s64.s32	%rd74, %r67;
+	cvt.s64.s32	%rd74, %r66;
 	shl.b64 	%rd75, %rd74, 2;
 	add.s64 	%rd76, %rd4, %rd75;
-	ld.u32 	%r68, [%rd76];
-	mov.b32 	%r13, %r68;
+	ld.u32 	%r67, [%rd76];
+	mov.b32 	%r13, %r67;
 tmp32:
 	.loc	1 66 5
 	setp.gt.s32	%p33, %r11, %r13;
@@ -377,16 +377,16 @@ tmp32:
 	bra.uni 	BB3_16;
 
 BB3_16:
-	ld.u32 	%r69, [%rd1+4];
-	setp.gt.s32	%p9, %r69, 0;
+	ld.u32 	%r68, [%rd1+4];
+	setp.gt.s32	%p9, %r68, 0;
 	mov.pred 	%p40, %p9;
 
 BB3_17:
 	mov.pred 	%p10, %p40;
 	not.pred 	%p35, %p10;
-	mov.u32 	%r74, %r10;
+	mov.u32 	%r73, %r10;
 tmp33:
-	mov.u32 	%r75, %r11;
+	mov.u32 	%r74, %r11;
 tmp34:
 	@%p35 bra 	BB3_19;
 	bra.uni 	BB3_18;
@@ -399,38 +399,35 @@ tmp36:
 	.loc	1 68 6
 	mov.b32 	%r15, %r12;
 tmp37:
-	mov.u32 	%r74, %r15;
+	mov.u32 	%r73, %r15;
 tmp38:
-	mov.u32 	%r75, %r14;
+	mov.u32 	%r74, %r14;
 tmp39:
 
 BB3_19:
-	.loc	1 70 5
-	mov.u32 	%r17, %r75;
-	mov.u32 	%r16, %r74;
+	.loc	1 62 30
+	mov.u32 	%r17, %r74;
+	mov.u32 	%r16, %r73;
 tmp40:
+
 	add.s32 	%r18, %r12, 1;
 tmp41:
-
-	.loc	1 62 30
-	add.s32 	%r19, %r18, 1;
+	mov.u32 	%r70, %r16;
 tmp42:
-	mov.u32 	%r71, %r16;
+	mov.u32 	%r71, %r17;
 tmp43:
-	mov.u32 	%r72, %r17;
+	mov.u32 	%r72, %r18;
 tmp44:
-	mov.u32 	%r73, %r19;
-tmp45:
 	bra.uni 	BB3_14;
-tmp46:
+tmp45:
 
 BB3_21:
-	.loc	1 73 4
+	.loc	1 72 4
 	cvt.s64.s32	%rd19, %r1;
 	shl.b64 	%rd20, %rd19, 2;
 	add.s64 	%rd21, %rd4, %rd20;
-	ld.u32 	%r41, [%rd21];
-	setp.gt.s32	%p27, %r41, %r11;
+	ld.u32 	%r40, [%rd21];
+	setp.gt.s32	%p27, %r40, %r11;
 	mov.pred 	%p26, 0;
 	not.pred 	%p28, %p27;
 	mov.pred 	%p41, %p26;
@@ -448,72 +445,72 @@ BB3_23:
 	bra.uni 	BB3_24;
 
 BB3_24:
-	.loc	1 74 15
-tmp47:
+	.loc	1 73 15
+tmp46:
 	cvt.s64.s32	%rd25, %r1;
 	shl.b64 	%rd26, %rd25, 2;
 	add.s64 	%rd27, %rd3, %rd26;
-	ld.u32 	%r43, [%rd27];
-	add.s32 	%r44, %r43, %r10;
-	cvt.s64.s32	%rd28, %r44;
+	ld.u32 	%r42, [%rd27];
+	add.s32 	%r43, %r42, %r10;
+	cvt.s64.s32	%rd28, %r43;
 	mul.lo.s64 	%rd29, %rd28, 12;
 	add.s64 	%rd30, %rd2, %rd29;
-	ld.u32 	%r45, [%rd30+4];
-	setp.lt.s32	%p30, %r5, %r45;
+	ld.u32 	%r44, [%rd30+4];
+	setp.lt.s32	%p30, %r5, %r44;
 	not.pred 	%p31, %p30;
 	@%p31 bra 	BB3_26;
 	bra.uni 	BB3_25;
 
 BB3_25:
-	mov.u32 	%r76, %r5;
-tmp48:
+	mov.u32 	%r75, %r5;
+tmp47:
 	bra.uni 	BB3_27;
 
 BB3_26:
 	cvt.s64.s32	%rd31, %r1;
 	shl.b64 	%rd32, %rd31, 2;
 	add.s64 	%rd33, %rd3, %rd32;
-	ld.u32 	%r46, [%rd33];
-	add.s32 	%r47, %r46, %r10;
-	cvt.s64.s32	%rd34, %r47;
+	ld.u32 	%r45, [%rd33];
+	add.s32 	%r46, %r45, %r10;
+	cvt.s64.s32	%rd34, %r46;
 	mul.lo.s64 	%rd35, %rd34, 12;
 	add.s64 	%rd36, %rd2, %rd35;
-	ld.u32 	%r20, [%rd36+4];
-	mov.u32 	%r76, %r20;
+	ld.u32 	%r19, [%rd36+4];
+	mov.u32 	%r75, %r19;
 
 BB3_27:
-	mov.u32 	%r21, %r76;
-	.loc	1 75 11
+	mov.u32 	%r20, %r75;
+	.loc	1 74 11
 	cvt.s64.s32	%rd37, %r1;
 	shl.b64 	%rd38, %rd37, 2;
 	add.s64 	%rd39, %rd3, %rd38;
-	ld.u32 	%r48, [%rd39];
-	add.s32 	%r49, %r48, %r10;
-	cvt.s64.s32	%rd40, %r49;
+	ld.u32 	%r47, [%rd39];
+	add.s32 	%r48, %r47, %r10;
+	cvt.s64.s32	%rd40, %r48;
 	mul.lo.s64 	%rd41, %rd40, 12;
 	add.s64 	%rd42, %rd2, %rd41;
-	ld.u32 	%r50, [%rd42];
-	mov.b32 	%r51, %r50;
-tmp49:
-	.loc	1 76 13
+	ld.u32 	%r49, [%rd42];
+	mov.b32 	%r50, %r49;
+tmp48:
+	.loc	1 75 13
 	cvt.s64.s32	%rd43, %r1;
 	shl.b64 	%rd44, %rd43, 2;
 	add.s64 	%rd45, %rd3, %rd44;
-	ld.u32 	%r52, [%rd45];
-	add.s32 	%r53, %r52, %r10;
-	cvt.s64.s32	%rd46, %r53;
+	ld.u32 	%r51, [%rd45];
+	add.s32 	%r52, %r51, %r10;
+	cvt.s64.s32	%rd46, %r52;
 	mul.lo.s64 	%rd47, %rd46, 12;
 	add.s64 	%rd48, %rd2, %rd47;
-	ld.u32 	%r54, [%rd48+8];
-	mov.b32 	%r55, %r54;
-tmp50:
-	.loc	1 77 5
-	cvt.s64.s32	%rd49, %r51;
+	ld.u32 	%r53, [%rd48+8];
+	mov.b32 	%r54, %r53;
+tmp49:
+	.loc	1 76 5
+	cvt.s64.s32	%rd49, %r50;
 	shl.b64 	%rd50, %rd49, 2;
 	add.s64 	%rd51, %rd3, %rd50;
-	ld.u32 	%r56, [%rd51];
-	add.s32 	%r57, %r56, %r55;
-	cvt.s64.s32	%rd52, %r57;
+	ld.u32 	%r55, [%rd51];
+	add.s32 	%r56, %r55, %r54;
+	cvt.s64.s32	%rd52, %r56;
 	mul.lo.s64 	%rd53, %rd52, 12;
 	add.s64 	%rd54, %rd2, %rd53;
 	add.s64 	%rd55, %rd54, 4;
@@ -524,7 +521,7 @@ tmp50:
 	.param .b64 param0;
 	st.param.b64	[param0+0], %rd55;
 	.param .b32 param1;
-	st.param.b32	[param1+0], %r21;
+	st.param.b32	[param1+0], %r20;
 	.param .b32 retval0;
 	call.uni (retval0), 
 	_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicAddEPii, 
@@ -532,17 +529,17 @@ tmp50:
 	param0, 
 	param1
 	);
-	ld.param.b32	%r58, [retval0+0];
+	ld.param.b32	%r57, [retval0+0];
 	
 	//{
 	}// Callseq End 3
-	.loc	1 78 5
+	.loc	1 77 5
 	cvt.s64.s32	%rd56, %r1;
 	shl.b64 	%rd57, %rd56, 2;
 	add.s64 	%rd58, %rd3, %rd57;
-	ld.u32 	%r59, [%rd58];
-	add.s32 	%r60, %r59, %r10;
-	cvt.s64.s32	%rd59, %r60;
+	ld.u32 	%r58, [%rd58];
+	add.s32 	%r59, %r58, %r10;
+	cvt.s64.s32	%rd59, %r59;
 	mul.lo.s64 	%rd60, %rd59, 12;
 	add.s64 	%rd61, %rd2, %rd60;
 	add.s64 	%rd62, %rd61, 4;
@@ -553,7 +550,7 @@ tmp50:
 	.param .b64 param0;
 	st.param.b64	[param0+0], %rd62;
 	.param .b32 param1;
-	st.param.b32	[param1+0], %r21;
+	st.param.b32	[param1+0], %r20;
 	.param .b32 retval0;
 	call.uni (retval0), 
 	_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicSubEPii, 
@@ -561,12 +558,12 @@ tmp50:
 	param0, 
 	param1
 	);
-	ld.param.b32	%r61, [retval0+0];
+	ld.param.b32	%r60, [retval0+0];
 	
 	//{
 	}// Callseq End 4
-	.loc	1 79 5
-	cvt.s64.s32	%rd63, %r51;
+	.loc	1 78 5
+	cvt.s64.s32	%rd63, %r50;
 	shl.b64 	%rd64, %rd63, 2;
 	add.s64 	%rd65, %rd5, %rd64;
 	// Callseq Start 5
@@ -576,7 +573,7 @@ tmp50:
 	.param .b64 param0;
 	st.param.b64	[param0+0], %rd65;
 	.param .b32 param1;
-	st.param.b32	[param1+0], %r21;
+	st.param.b32	[param1+0], %r20;
 	.param .b32 retval0;
 	call.uni (retval0), 
 	_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicAddEPii, 
@@ -584,11 +581,11 @@ tmp50:
 	param0, 
 	param1
 	);
-	ld.param.b32	%r62, [retval0+0];
+	ld.param.b32	%r61, [retval0+0];
 	
 	//{
 	}// Callseq End 5
-	.loc	1 80 5
+	.loc	1 79 5
 	cvt.s64.s32	%rd66, %r1;
 	shl.b64 	%rd67, %rd66, 2;
 	add.s64 	%rd68, %rd5, %rd67;
@@ -599,7 +596,7 @@ tmp50:
 	.param .b64 param0;
 	st.param.b64	[param0+0], %rd68;
 	.param .b32 param1;
-	st.param.b32	[param1+0], %r21;
+	st.param.b32	[param1+0], %r20;
 	.param .b32 retval0;
 	call.uni (retval0), 
 	_ZN41_INTERNAL_19_pushrelabel_cpp1_ii_45def1c09atomicSubEPii, 
@@ -607,41 +604,41 @@ tmp50:
 	param0, 
 	param1
 	);
-	ld.param.b32	%r63, [retval0+0];
+	ld.param.b32	%r62, [retval0+0];
 	
 	//{
 	}// Callseq End 6
-tmp51:
+tmp50:
 	bra.uni 	BB3_29;
-tmp52:
+tmp51:
 
 BB3_28:
-	.loc	1 83 5
-	add.s32 	%r42, %r11, 1;
+	.loc	1 82 5
+	add.s32 	%r41, %r11, 1;
 	cvt.s64.s32	%rd22, %r1;
 	shl.b64 	%rd23, %rd22, 2;
 	add.s64 	%rd24, %rd4, %rd23;
-	st.u32 	[%rd24], %r42;
-tmp53:
+	st.u32 	[%rd24], %r41;
+tmp52:
 
 BB3_29:
 
 BB3_30:
 
 	.loc	1 53 29
-	add.s32 	%r22, %r4, 1;
+	add.s32 	%r21, %r4, 1;
+tmp53:
+	mov.u32 	%r69, %r21;
 tmp54:
-	mov.u32 	%r70, %r22;
-tmp55:
 	bra.uni 	BB3_9;
-tmp56:
+tmp55:
 
 BB3_32:
 
 BB3_33:
-	.loc	1 87 1
+	.loc	1 86 1
 	ret;
-tmp57:
+tmp56:
 func_end3:
 }
 
@@ -669,7 +666,7 @@ func_begin4:
 	ld.param.u32 	%r3, [_ZN4dim3C1Ejjj_param_3];
 func_exec_begin4:
 	.loc	4 415 119
-tmp58:
+tmp57:
 	st.u32 	[%rd1], %r1;
 	.loc	4 415 126
 	st.u32 	[%rd1+4], %r2;
@@ -677,7 +674,7 @@ tmp58:
 	st.u32 	[%rd1+8], %r3;
 	.loc	4 415 140
 	ret;
-tmp59:
+tmp58:
 func_end4:
 }
 
@@ -705,7 +702,7 @@ func_begin5:
 	ld.param.u32 	%r3, [_ZN4dim3C2Ejjj_param_3];
 func_exec_begin5:
 	.loc	4 415 140
-tmp60:
+tmp59:
 	// Callseq Start 7
 	{
 	.reg .b32 temp_param_reg;
@@ -730,7 +727,7 @@ tmp60:
 	//{
 	}// Callseq End 7
 	ret;
-tmp61:
+tmp60:
 func_end5:
 }
 
@@ -756,13 +753,13 @@ func_begin6:
 	ld.param.u64 	%rd1, [_ZSt7forwardIR9flowGraphEOT_RNSt16remove_referenceIS2_E4typeE_param_0];
 func_exec_begin6:
 	.loc	5 1276 2
-tmp62:
+tmp61:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp63:
+tmp62:
 func_end6:
 }
 
@@ -783,11 +780,11 @@ func_begin7:
 	ld.param.u64 	%rd1, [_ZSt7forwardIRiEOT_RNSt16remove_referenceIS1_E4typeE_param_0];
 func_exec_begin7:
 	.loc	5 1276 2
-tmp64:
+tmp63:
 	mov.u64 	%rd2, %rd1;
 	st.param.b64	[func_retval0+0], %rd2;
 	ret;
-tmp65:
+tmp64:
 func_end7:
 }
 
@@ -813,13 +810,13 @@ func_begin8:
 	ld.param.u64 	%rd1, [_ZSt7forwardISaISt6vectorIN9flowGraph4edgeESaIS2_EEEEOT_RNSt16remove_referenceIS6_E4typeE_param_0];
 func_exec_begin8:
 	.loc	5 1276 2
-tmp66:
+tmp65:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp67:
+tmp66:
 func_end8:
 }
 
@@ -845,13 +842,13 @@ func_begin9:
 	ld.param.u64 	%rd1, [_ZSt7forwardISt11_Wrap_allocISaISt6vectorIN9flowGraph4edgeESaIS3_EEEEEOT_RNSt16remove_referenceIS8_E4typeE_param_0];
 func_exec_begin9:
 	.loc	5 1276 2
-tmp68:
+tmp67:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp69:
+tmp68:
 func_end9:
 }
 
@@ -877,13 +874,13 @@ func_begin10:
 	ld.param.u64 	%rd1, [_ZSt4moveIRSt11_Wrap_allocISaISt6vectorIN9flowGraph4edgeESaIS3_EEEEEONSt16remove_referenceIT_E4typeEOSA__param_0];
 func_exec_begin10:
 	.loc	5 1292 2
-tmp70:
+tmp69:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp71:
+tmp70:
 func_end10:
 }
 
@@ -909,13 +906,13 @@ func_begin11:
 	ld.param.u64 	%rd1, [_ZSt7forwardIRSt11_Wrap_allocISaISt6vectorIN9flowGraph4edgeESaIS3_EEEEEOT_RNSt16remove_referenceIS9_E4typeE_param_0];
 func_exec_begin11:
 	.loc	5 1276 2
-tmp72:
+tmp71:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp73:
+tmp72:
 func_end11:
 }
 
@@ -941,13 +938,13 @@ func_begin12:
 	ld.param.u64 	%rd1, [_ZSt7forwardISt16_Container_proxyEOT_RNSt16remove_referenceIS1_E4typeE_param_0];
 func_exec_begin12:
 	.loc	5 1276 2
-tmp74:
+tmp73:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp75:
+tmp74:
 func_end12:
 }
 
@@ -973,13 +970,13 @@ func_begin13:
 	ld.param.u64 	%rd1, [_ZSt7forwardIRKSt6vectorIN9flowGraph4edgeESaIS2_EEEOT_RNSt16remove_referenceIS7_E4typeE_param_0];
 func_exec_begin13:
 	.loc	5 1276 2
-tmp76:
+tmp75:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp77:
+tmp76:
 func_end13:
 }
 
@@ -1005,13 +1002,13 @@ func_begin14:
 	ld.param.u64 	%rd1, [_ZSt7forwardISaIN9flowGraph4edgeEEEOT_RNSt16remove_referenceIS3_E4typeE_param_0];
 func_exec_begin14:
 	.loc	5 1276 2
-tmp78:
+tmp77:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp79:
+tmp78:
 func_end14:
 }
 
@@ -1037,13 +1034,13 @@ func_begin15:
 	ld.param.u64 	%rd1, [_ZSt7forwardISt11_Wrap_allocISaIN9flowGraph4edgeEEEEOT_RNSt16remove_referenceIS5_E4typeE_param_0];
 func_exec_begin15:
 	.loc	5 1276 2
-tmp80:
+tmp79:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp81:
+tmp80:
 func_end15:
 }
 
@@ -1069,13 +1066,13 @@ func_begin16:
 	ld.param.u64 	%rd1, [_ZSt4moveIRSt11_Wrap_allocISaIN9flowGraph4edgeEEEEONSt16remove_referenceIT_E4typeEOS7__param_0];
 func_exec_begin16:
 	.loc	5 1292 2
-tmp82:
+tmp81:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp83:
+tmp82:
 func_end16:
 }
 
@@ -1101,13 +1098,13 @@ func_begin17:
 	ld.param.u64 	%rd1, [_ZSt7forwardIRSt11_Wrap_allocISaIN9flowGraph4edgeEEEEOT_RNSt16remove_referenceIS6_E4typeE_param_0];
 func_exec_begin17:
 	.loc	5 1276 2
-tmp84:
+tmp83:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp85:
+tmp84:
 func_end17:
 }
 
@@ -1133,13 +1130,13 @@ func_begin18:
 	ld.param.u64 	%rd1, [_ZSt7forwardIRSt11_Wrap_allocISaIiEEEOT_RNSt16remove_referenceIS4_E4typeE_param_0];
 func_exec_begin18:
 	.loc	5 1276 2
-tmp86:
+tmp85:
 	mov.u64 	%rd2, %rd1;
 	st.u64 	[%SP+0], %rd2;
 	ld.u64 	%rd3, [%SP+0];
 	st.param.b64	[func_retval0+0], %rd3;
 	ret;
-tmp87:
+tmp86:
 func_end18:
 }
 
@@ -1160,11 +1157,11 @@ func_begin19:
 	ld.param.u64 	%rd1, [_ZSt7forwardIRKiEOT_RNSt16remove_referenceIS2_E4typeE_param_0];
 func_exec_begin19:
 	.loc	5 1276 2
-tmp88:
+tmp87:
 	mov.u64 	%rd2, %rd1;
 	st.param.b64	[func_retval0+0], %rd2;
 	ret;
-tmp89:
+tmp88:
 func_end19:
 }
 
@@ -1198,7 +1195,7 @@ func_end19:
 	ret;
 }
 
-	.file	1 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 1525646335, 7401
+	.file	1 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 1525648380, 6799
 	.file	2 "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include\\vcruntime_new.h", 1513317302, 2679
 	.file	3 "c:\\program files\\nvidia gpu computing toolkit\\cuda\\v9.1\\include\\device_atomic_functions.hpp", 1509767883, 8421
 	.file	4 "c:\\program files\\nvidia gpu computing toolkit\\cuda\\v9.1\\include\\vector_types.h", 1509767884, 12864
@@ -2031,7 +2028,7 @@ func_end19:
  .b8 8
 
  .b64 tmp6
- .b64 tmp57
+ .b64 tmp56
  .b8 9
 
  .b8 105
@@ -2046,8 +2043,8 @@ func_end19:
  .b32 490
  .b8 6
  .b8 144
- .b8 176
- .b8 230
+ .b8 185
+ .b8 228
  .b8 200
  .b8 171
  .b8 2
@@ -2089,7 +2086,7 @@ func_end19:
  .b8 8
 
  .b64 tmp12
- .b64 tmp56
+ .b64 tmp55
  .b8 10
 
  .b8 95
@@ -2102,11 +2099,11 @@ func_end19:
  .b8 8
 
  .b64 tmp16
- .b64 tmp56
+ .b64 tmp55
  .b8 8
 
  .b64 tmp16
- .b64 tmp53
+ .b64 tmp52
  .b8 10
 
  .b8 99
@@ -2127,7 +2124,7 @@ func_end19:
  .b8 8
 
  .b64 tmp18
- .b64 tmp53
+ .b64 tmp52
  .b8 10
 
  .b8 99
@@ -2209,7 +2206,7 @@ func_end19:
  .b8 8
 
  .b64 tmp22
- .b64 tmp46
+ .b64 tmp45
  .b8 10
 
  .b8 105
@@ -2222,11 +2219,11 @@ func_end19:
  .b8 8
 
  .b64 tmp29
- .b64 tmp46
+ .b64 tmp45
  .b8 8
 
  .b64 tmp29
- .b64 tmp41
+ .b64 tmp39
  .b8 9
 
  .b8 101
@@ -2254,7 +2251,7 @@ func_end19:
  .b32 490
  .b8 6
  .b8 144
- .b8 183
+ .b8 182
  .b8 236
  .b8 200
  .b8 171
@@ -2290,19 +2287,19 @@ func_end19:
  .b8 0
  .b8 8
 
- .b64 tmp47
- .b64 tmp52
+ .b64 tmp46
+ .b64 tmp51
  .b8 9
 
  .b8 118
 
  .b8 0
  .b32 1
- .b32 75
+ .b32 74
  .b32 490
  .b8 6
  .b8 144
- .b8 177
+ .b8 176
  .b8 234
  .b8 200
  .b8 171
@@ -2316,11 +2313,11 @@ func_end19:
 
  .b8 0
  .b32 1
- .b32 76
+ .b32 75
  .b32 490
  .b8 6
  .b8 144
- .b8 181
+ .b8 180
  .b8 234
  .b8 200
  .b8 171
@@ -2336,11 +2333,11 @@ func_end19:
 
  .b8 0
  .b32 1
- .b32 74
+ .b32 73
  .b32 490
  .b8 6
  .b8 144
- .b8 177
+ .b8 176
  .b8 228
  .b8 200
  .b8 171
@@ -10140,13 +10137,13 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 176
- .b8 238
+ .b8 185
+ .b8 236
  .b8 200
  .b8 171
  .b8 2
  .b64 tmp15
- .b64 tmp54
+ .b64 tmp53
  .b8 5
  .b8 0
  .b8 144
@@ -10154,30 +10151,30 @@ func_end19:
  .b8 228
  .b8 149
  .b8 1
+ .b64 tmp53
  .b64 tmp54
- .b64 tmp55
  .b8 6
  .b8 0
  .b8 144
- .b8 178
+ .b8 177
  .b8 228
  .b8 200
  .b8 171
  .b8 2
- .b64 tmp55
+ .b64 tmp54
  .b64 func_end3
  .b8 6
  .b8 0
  .b8 144
- .b8 176
- .b8 238
+ .b8 185
+ .b8 236
  .b8 200
  .b8 171
  .b8 2
  .b64 0
  .b64 0
  .b64 tmp17
- .b64 tmp48
+ .b64 tmp47
  .b8 5
  .b8 0
  .b8 144
@@ -10185,12 +10182,12 @@ func_end19:
  .b8 228
  .b8 149
  .b8 1
- .b64 tmp48
+ .b64 tmp47
  .b64 func_end3
  .b8 6
  .b8 0
  .b8 144
- .b8 182
+ .b8 181
  .b8 238
  .b8 200
  .b8 171
@@ -10211,7 +10208,7 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 177
+ .b8 176
  .b8 238
  .b8 200
  .b8 171
@@ -10231,7 +10228,7 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 180
+ .b8 179
  .b8 238
  .b8 200
  .b8 171
@@ -10251,13 +10248,13 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 180
+ .b8 179
  .b8 238
  .b8 200
  .b8 171
  .b8 2
  .b64 tmp40
- .b64 tmp43
+ .b64 tmp42
  .b8 6
  .b8 0
  .b8 144
@@ -10266,12 +10263,12 @@ func_end19:
  .b8 200
  .b8 171
  .b8 2
- .b64 tmp43
+ .b64 tmp42
  .b64 func_end3
  .b8 6
  .b8 0
  .b8 144
- .b8 177
+ .b8 176
  .b8 238
  .b8 200
  .b8 171
@@ -10292,7 +10289,7 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 178
+ .b8 177
  .b8 238
  .b8 200
  .b8 171
@@ -10312,7 +10309,7 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 181
+ .b8 180
  .b8 238
  .b8 200
  .b8 171
@@ -10332,13 +10329,13 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 181
+ .b8 180
  .b8 238
  .b8 200
  .b8 171
  .b8 2
  .b64 tmp40
- .b64 tmp44
+ .b64 tmp43
  .b8 6
  .b8 0
  .b8 144
@@ -10347,12 +10344,12 @@ func_end19:
  .b8 200
  .b8 171
  .b8 2
- .b64 tmp44
+ .b64 tmp43
  .b64 func_end3
  .b8 6
  .b8 0
  .b8 144
- .b8 178
+ .b8 177
  .b8 238
  .b8 200
  .b8 171
@@ -10373,7 +10370,7 @@ func_end19:
  .b8 6
  .b8 0
  .b8 144
- .b8 179
+ .b8 178
  .b8 238
  .b8 200
  .b8 171
@@ -10389,7 +10386,7 @@ func_end19:
  .b8 171
  .b8 2
  .b64 tmp41
- .b64 tmp42
+ .b64 tmp44
  .b8 6
  .b8 0
  .b8 144
@@ -10398,22 +10395,12 @@ func_end19:
  .b8 200
  .b8 171
  .b8 2
- .b64 tmp42
- .b64 tmp45
- .b8 6
- .b8 0
- .b8 144
- .b8 185
- .b8 226
- .b8 200
- .b8 171
- .b8 2
- .b64 tmp45
+ .b64 tmp44
  .b64 func_end3
  .b8 6
  .b8 0
  .b8 144
- .b8 179
+ .b8 178
  .b8 238
  .b8 200
  .b8 171

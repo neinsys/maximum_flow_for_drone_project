@@ -50758,110 +50758,110 @@ curLowestNeighbor = i;
 #line 69
 }  
 #line 70
-i++; 
-#line 71
 }  
-#line 73
+#line 72
 if (((height[u]) > neighborMinHeight) && (curLowestNeighbor != (-1))) { 
-#line 74
+#line 73
 int delta = (curExcess < ((graph[(startIdx[u]) + curLowestNeighbor]).cap)) ? curExcess : ((graph[(startIdx[u]) + curLowestNeighbor]).cap); ; 
-#line 75
+#line 74
 int v = (graph[(startIdx[u]) + curLowestNeighbor]).to; 
-#line 76
+#line 75
 int rev = (graph[(startIdx[u]) + curLowestNeighbor]).rev; 
-#line 77
+#line 76
 atomicAdd(&((graph[(startIdx[v]) + rev]).cap), delta); 
-#line 78
+#line 77
 atomicSub(&((graph[(startIdx[u]) + curLowestNeighbor]).cap), delta); 
-#line 79
+#line 78
 atomicAdd(&(excessFlow[v]), delta); 
-#line 80
+#line 79
 atomicSub(&(excessFlow[u]), delta); 
-#line 81
+#line 80
 } else 
-#line 82
+#line 81
 { 
-#line 83
+#line 82
 (height[u]) = (neighborMinHeight + 1); 
+#line 83
+}  
 #line 84
 }  
 #line 85
 }  
 #line 86
-}  
-#line 87
 } 
 #endif
-#line 90 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
+#line 89 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 void global_relabel_cpu(edge *graph, int *startIdx, int *height, int *excessFlow, int *excessTotal, bool *marked, int n, int s, int t) { 
-#line 92
+#line 91
 for (int u = 0; u < n; u++) { 
-#line 93
+#line 92
 for (int i = startIdx[u]; i < (startIdx[u + 1]); i++) { 
-#line 94
+#line 93
 edge &e = graph[i]; 
-#line 95
+#line 94
 int v = e.to; 
-#line 96
+#line 95
 edge &rev = graph[(startIdx[v]) + (e.rev)]; 
-#line 97
+#line 96
 if ((height[u]) > ((height[v]) + 1)) { 
-#line 98
+#line 97
 (excessFlow[u]) -= (e.cap); 
-#line 99
+#line 98
 (excessFlow[v]) += (e.cap); 
-#line 100
+#line 99
 (rev.cap) += (e.cap); 
-#line 101
+#line 100
 (e.cap) = 0; 
+#line 101
+}  
 #line 102
 }  
 #line 103
 }  
-#line 104
-}  
-#line 106
+#line 105
 std::queue< int>  que; 
-#line 107
+#line 106
 que.push(t); 
-#line 108
+#line 107
 std::fill(height, height + n, n); 
-#line 109
+#line 108
 (height[t]) = 0; 
-#line 111
+#line 110
 while (!que.empty()) { 
-#line 112
+#line 111
 int idx = que.front(); 
-#line 113
+#line 112
 que.pop(); 
-#line 115
+#line 114
 for (int i = startIdx[idx]; i < (startIdx[idx + 1]); i++) { 
-#line 116
+#line 115
 edge &e = graph[i]; 
-#line 117
+#line 116
 int v = e.to; 
-#line 118
+#line 117
 int cap = (graph[(startIdx[v]) + (e.rev)]).cap; 
-#line 119
+#line 118
 if ((cap > 0) && ((height[v]) > ((height[idx]) + 1))) { 
-#line 120
+#line 119
 (height[v]) = ((height[idx]) + 1); 
-#line 121
+#line 120
 que.push(v); 
+#line 121
+}  
 #line 122
 }  
 #line 123
 }  
-#line 124
-}  
-#line 127
+#line 126
 for (int i = 0; i < n; i++) { 
-#line 128
+#line 127
 if ((!(marked[i])) && ((height[i]) == n)) { 
-#line 129
+#line 128
 (marked[i]) = true; 
-#line 130
+#line 129
 (*excessTotal) -= (excessFlow[i]); 
+#line 130
+(excessFlow[i]) = 0; 
 #line 131
 }  
 #line 132
@@ -50917,110 +50917,90 @@ int *height_h = (int *)malloc(sizeof(int) * n);
 #line 165
 int *startIdx_h = (int *)malloc(sizeof(int) * (n + 1)); 
 #line 166
-int netFlowOutS_h = 0; 
-#line 167
-int netFlowInT_h = 0; 
-#line 168
 edge *graph_h; 
-#line 169
+#line 167
 bool *marked = (bool *)malloc(sizeof(bool) * n); 
-#line 170
+#line 168
 int excessTotal = 0; 
-#line 173
+#line 171
 int *excessFlow_d; 
-#line 174
+#line 172
 int *height_d; 
-#line 175
+#line 173
 edge *graph_d; 
-#line 176
+#line 174
 int *startIdx_d; 
+#line 176
+{ cudaAssert(cudaMalloc((void **)(&excessFlow_d), sizeof(int) * n), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 176); } ; 
 #line 177
-int *netFlowOutS_d; 
+{ cudaAssert(cudaMalloc((void **)(&height_d), sizeof(int) * n), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 177); } ; 
 #line 178
-int *netFlowInT_d; 
+{ cudaAssert(cudaMalloc((void **)(&startIdx_d), sizeof(int) * (n + 1)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 178); } ; 
 #line 180
-{ cudaAssert(cudaMalloc((void **)(&excessFlow_d), sizeof(int) * n), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 180); } ; 
-#line 181
-{ cudaAssert(cudaMalloc((void **)(&height_d), sizeof(int) * n), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 181); } ; 
-#line 182
-{ cudaAssert(cudaMalloc((void **)(&startIdx_d), sizeof(int) * (n + 1)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 182); } ; 
-#line 183
-{ cudaAssert(cudaMalloc((void **)(&netFlowOutS_d), sizeof(int)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 183); } ; 
-#line 184
-{ cudaAssert(cudaMalloc((void **)(&netFlowInT_d), sizeof(int)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 184); } ; 
-#line 186
 int sum = 0; 
-#line 188
+#line 182
 (startIdx_h[0]) = 0; 
-#line 189
+#line 183
 for (int i = 0; i < n; i++) { 
-#line 190
+#line 184
 sum += (graph.Graph)[i].size(); 
-#line 191
+#line 185
 (startIdx_h[i + 1]) = sum; 
-#line 192
+#line 186
 }  
-#line 193
-{ cudaAssert(cudaMemcpy(startIdx_d, startIdx_h, sizeof(int) * (n + 1), cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 193); } ; 
-#line 195
+#line 187
+{ cudaAssert(cudaMemcpy(startIdx_d, startIdx_h, sizeof(int) * (n + 1), cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 187); } ; 
+#line 189
 graph_h = ((edge *)malloc(sizeof(edge) * sum)); 
-#line 196
-{ cudaAssert(cudaMalloc((void **)(&graph_d), sizeof(edge) * sum), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 196); } ; 
-#line 199
+#line 190
+{ cudaAssert(cudaMalloc((void **)(&graph_d), sizeof(edge) * sum), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 190); } ; 
+#line 193
 init_flow(&graph, height_h, excessFlow_h, &excessTotal, marked, n, source, sink); 
-#line 202
+#line 196
 for (int i = 0; i < n; i++) { 
-#line 203
+#line 197
 for (int j = 0; j < (graph.Graph)[i].size(); j++) { 
-#line 204
+#line 198
 (graph_h[(startIdx_h[i]) + j]) = ((graph.Graph)[i])[j]; 
-#line 205
+#line 199
 }  
-#line 206
+#line 200
 }  
-#line 207
-{ cudaAssert(cudaMemcpy(graph_d, graph_h, sizeof(edge) * sum, cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 207); } ; 
-#line 208
-{ cudaAssert(cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int) * n, cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 208); } ; 
-#line 209
-{ cudaAssert(cudaMemcpy(netFlowOutS_d, &netFlowOutS_h, sizeof(int), cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 209); } ; 
-#line 210
-{ cudaAssert(cudaMemcpy(netFlowInT_d, &netFlowInT_h, sizeof(int), cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 210); } ; 
-#line 212
+#line 201
+{ cudaAssert(cudaMemcpy(graph_d, graph_h, sizeof(edge) * sum, cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 201); } ; 
+#line 202
+{ cudaAssert(cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int) * n, cudaMemcpyHostToDevice), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 202); } ; 
+#line 204
 while (((excessFlow_h[source]) + (excessFlow_h[sink])) < excessTotal) { 
-#line 215
+#line 207
 cudaMemcpy(height_d, height_h, sizeof(int) * n, cudaMemcpyHostToDevice); 
-#line 218
+#line 210
 int numBlocks = ((n + (threadsPerBlock.x)) - (1)) / (threadsPerBlock.x); 
-#line 219
+#line 211
 (cudaConfigureCall(numBlocks, threadsPerBlock)) ? (void)0 : push_relabel_kernel(graph_d, startIdx_d, height_d, excessFlow_d, n, source, sink); 
-#line 222
-{ cudaAssert(cudaMemcpy(graph_h, graph_d, sizeof(edge) * sum, cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 222); } ; 
-#line 223
-{ cudaAssert(cudaMemcpy(height_h, height_d, sizeof(int) * n, cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 223); } ; 
-#line 224
-{ cudaAssert(cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int) * n, cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 224); } ; 
-#line 225
-{ cudaAssert(cudaMemcpy(&netFlowOutS_h, netFlowOutS_d, sizeof(int), cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 225); } ; 
-#line 226
-{ cudaAssert(cudaMemcpy(&netFlowInT_h, netFlowInT_d, sizeof(int), cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 226); } ; 
-#line 229
+#line 214
+{ cudaAssert(cudaMemcpy(graph_h, graph_d, sizeof(edge) * sum, cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 214); } ; 
+#line 215
+{ cudaAssert(cudaMemcpy(height_h, height_d, sizeof(int) * n, cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 215); } ; 
+#line 216
+{ cudaAssert(cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int) * n, cudaMemcpyDeviceToHost), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 216); } ; 
+#line 219
 global_relabel_cpu(graph_h, startIdx_h, height_h, excessFlow_h, &excessTotal, marked, n, source, sink); 
-#line 231
+#line 221
 }  
-#line 233
+#line 223
 for (int i = 0; i < n; i++) { 
-#line 234
+#line 224
 for (int j = 0; j < ((startIdx_h[i + 1]) - (startIdx_h[i])); j++) { 
-#line 235
+#line 225
 (((graph.Graph)[i])[j].cap) = ((graph_h[(startIdx_h[i]) + j]).cap); 
-#line 236
+#line 226
 }  
-#line 237
+#line 227
 }  
-#line 239
+#line 229
 return {graph, excessFlow_h[sink]}; 
-#line 240
+#line 230
 } 
 #line 1 "pushrelabel.cudafe1.stub.c"
 #define _NV_ANON_NAMESPACE _GLOBAL__N__19_pushrelabel_cpp1_ii_45def1c0

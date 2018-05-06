@@ -67,7 +67,6 @@ __global__ void push_relabel_kernel(edge* graph, int* startIdx, int* height, int
 					neighborMinHeight = tempHeight;
 					curLowestNeighbor = i;
 				}
-				i++;
 			}
 
 			if (height[u] > neighborMinHeight && curLowestNeighbor != -1) {
@@ -128,6 +127,7 @@ __host__ void global_relabel_cpu(edge* graph, int* startIdx, int* height, int* e
 		if (!marked[i] && height[i] == n) {
 			marked[i] = true;
 			*excessTotal -= excessFlow[i];
+			excessFlow[i] = 0;
 		}
 	}
 }
@@ -163,8 +163,6 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	int* excessFlow_h = (int*)malloc(sizeof(int)*n);
 	int* height_h = (int*)malloc(sizeof(int)*n);
 	int* startIdx_h = (int*)malloc(sizeof(int)*(n + 1));
-	int netFlowOutS_h = 0;
-	int netFlowInT_h = 0;
 	edge* graph_h;
 	bool* marked = (bool*)malloc(sizeof(bool)*n);
 	int excessTotal = 0;
@@ -174,14 +172,10 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	int* height_d;
 	edge* graph_d;
 	int* startIdx_d;
-	int* netFlowOutS_d;
-	int* netFlowInT_d;
 
 	cudaCheckError(cudaMalloc((void**)&excessFlow_d, sizeof(int)*n));
 	cudaCheckError(cudaMalloc((void**)&height_d, sizeof(int)*n));
 	cudaCheckError(cudaMalloc((void**)&startIdx_d, sizeof(int)*(n + 1)));
-	cudaCheckError(cudaMalloc((void**)&netFlowOutS_d, sizeof(int)));
-	cudaCheckError(cudaMalloc((void**)&netFlowInT_d, sizeof(int)));
 
 	int sum = 0;
 
@@ -206,8 +200,6 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	}
 	cudaCheckError(cudaMemcpy(graph_d, graph_h, sizeof(edge)*sum, cudaMemcpyHostToDevice));
 	cudaCheckError(cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int)*n, cudaMemcpyHostToDevice));
-	cudaCheckError(cudaMemcpy(netFlowOutS_d, &netFlowOutS_h, sizeof(int), cudaMemcpyHostToDevice));
-	cudaCheckError(cudaMemcpy(netFlowInT_d, &netFlowInT_h, sizeof(int), cudaMemcpyHostToDevice));
 
 	while (excessFlow_h[source] + excessFlow_h[sink] < excessTotal) {
 		//while(netFlowOutS_h!=netFlowInT_h){
@@ -222,8 +214,6 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 		cudaCheckError(cudaMemcpy(graph_h, graph_d, sizeof(edge)*sum, cudaMemcpyDeviceToHost));
 		cudaCheckError(cudaMemcpy(height_h, height_d, sizeof(int)*n, cudaMemcpyDeviceToHost));
 		cudaCheckError(cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int)*n, cudaMemcpyDeviceToHost));
-		cudaCheckError(cudaMemcpy(&netFlowOutS_h, netFlowOutS_d, sizeof(int), cudaMemcpyDeviceToHost));
-		cudaCheckError(cudaMemcpy(&netFlowInT_h, netFlowInT_d, sizeof(int), cudaMemcpyDeviceToHost));
 
 		//call global_relabel_cpu()
 		global_relabel_cpu(graph_h, startIdx_h, height_h, excessFlow_h, &excessTotal, marked, n, source, sink);
