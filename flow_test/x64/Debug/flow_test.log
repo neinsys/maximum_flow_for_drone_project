@@ -1,8 +1,0 @@
-﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (flow_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  main.cpp
-c:\users\nein\source\repos\push_relabel_cuda\flow_test\pushrelabel.h(18): warning C4838: 'unsigned __int64'에서 'int'(으)로의 변환에는 축소 변환이 필요합니다.
-c:\users\nein\source\repos\push_relabel_cuda\flow_test\pushrelabel.h(18): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\nein\source\repos\push_relabel_cuda\flow_test\pushrelabel.h(19): warning C4838: 'unsigned __int64'에서 'int'(으)로의 변환에는 축소 변환이 필요합니다.
-c:\users\nein\source\repos\push_relabel_cuda\flow_test\pushrelabel.h(19): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  flow_test.vcxproj -> C:\Users\nein\source\repos\push_relabel_cuda\x64\Debug\push_relabel_cuda.exe
-  flow_test.vcxproj -> C:\Users\nein\source\repos\push_relabel_cuda\x64\Debug\push_relabel_cuda.pdb (Partial PDB)
