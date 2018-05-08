@@ -6,6 +6,7 @@
 #include<iostream>
 #include <random>
 #include <assert.h>
+#include <string.h>
 #include "Dinic.h"
 #include "flowgraph.h"
 using namespace std;
@@ -115,7 +116,7 @@ int main() {
 	vector<point> S, E;
 	random_device rn;
 	mt19937_64 rnd(rn());
-	const int N = 75;
+	const int N = 30;
 	uniform_int_distribution<int> vxRange(0, N-1);
 	for (int k = 0; k < 100; k++) {
 		int x = vxRange(rnd);

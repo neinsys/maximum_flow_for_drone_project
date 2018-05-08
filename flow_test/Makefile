@@ -1,45 +1,58 @@
-CUDA_INSTALL_PATH ?= /usr/local/cuda
 
-CXX := g++
-CC := gcc
-LINK := g++ -fPIC
-NVCC  := nvcc 
+EXECUTABLE := flow_test
 
-# Includes
-INCLUDES = -I. -I$(CUDA_INSTALL_PATH)/include
+CU_FILES   := pushrelabel.cu
 
-# Libraries
-LIB_CUDA := -L/usr/local/cuda/lib -lcuda
+CU_DEPS    :=
+
+CC_FILES   := flowgraph.cpp main.cpp
 
 
-# Options
-NVCCOPTIONS = -arch sm_20 -ptx
+###########################################################
 
-# Common flags
-COMMONFLAGS += $(INCLUDES)
-NVCCFLAGS += $(COMMONFLAGS) $(NVCCOPTIONS)
-CXXFLAGS += $(COMMONFLAGS)
-CFLAGS += $(COMMONFLAGS)
+ARCH=$(shell uname | sed -e 's/-.*//g')
+OBJDIR=objs
+CXX=g++ -m64 -std=c++11 -fopenmp
+CXXFLAGS=-O3 -Wall -Wextra -g
+HOSTNAME=$(shell hostname)
+
+LIBS       :=
+FRAMEWORKS :=
+
+NVCCFLAGS=-D_FORCE_INLINES -O3 -m64 --gpu-architecture compute_35 -std=c++11
+LIBS += GL glut cudart
+
+ifneq ($(wildcard /opt/cuda-8.0/.*),)
+# Latedays
+LDFLAGS=-L/opt/cuda-8.0/lib64/ -lcudart
+else
+# GHC
+LDFLAGS=-L/usr/local/cuda/lib64/ -lcudart
+endif
+
+LDLIBS  := $(addprefix -l, $(LIBS))
+LDFRAMEWORKS := $(addprefix -framework , $(FRAMEWORKS))
+
+NVCC=nvcc
+
+OBJS=$(OBJDIR)/flowgraph.o $(OBJDIR)/pushrelabel.o $(OBJDIR)/main.o
 
 
+.PHONY: dirs clean
 
-CUDA_OBJS = pushrelabel.ptx 
-OBJS = demo0.cpp.o pushrelabel.cpp.o
-TARGET = solution.x
-LINKLINE = $(LINK) -o $(TARGET) $(OBJS) $(LIB_CUDA)
+default: $(EXECUTABLE)
 
-.SUFFIXES:	.c	.cpp	.cu	.o	
-%.c.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-%.ptx: %.cu
-	$(NVCC) $(NVCCFLAGS) $< -o $@
-
-%.cpp.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-$(TARGET): $(OBJS) $(CUDA_OBJS)
-	$(LINKLINE)
+dirs:
+	mkdir -p $(OBJDIR)/
 
 clean:
-	rm -rf $(TARGET) *.o *.ptx
+	rm -rf $(OBJDIR) *~ $(EXECUTABLE)
+
+$(EXECUTABLE): dirs $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS) $(LDLIBS) $(LDFRAMEWORKS)
+
+$(OBJDIR)/%.o: %.cpp
+	$(CXX) $< $(CXXFLAGS) -c -o $@
+
+$(OBJDIR)/%.o: %.cu
+	$(NVCC) $< $(NVCCFLAGS) -c -o $@
