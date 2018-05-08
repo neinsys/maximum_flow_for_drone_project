@@ -57,7 +57,6 @@ __global__ void push_relabel_kernel(edge* graph, int* startIdx, int* height, int
 			int neighborMinHeight = ((int)CUDART_INF) / 2;
 
 			//find lowest height in neighborhood
-			int i = 0;
 			int size = startIdx[u + 1] - startIdx[u];
 			for (int i = 0; i < size; i++) {
 				const edge& e = graph[startIdx[u] + i];

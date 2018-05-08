@@ -211397,7 +211397,8 @@ template<class _Ty,
 #line 1 "c:\\users\\nein\\source\\repos\\push_relabel_cuda\\flow_test\\pushrelabel.h"
 
 
-
+#line 1 "c:\\users\\nein\\source\\repos\\push_relabel_cuda\\flow_test\\flowgraph.h"
+#pragma once
 
 struct flowGraph {
 	struct edge {
@@ -211408,25 +211409,32 @@ struct flowGraph {
 	int sink;
 
 	std::vector<std::vector<edge>> Graph;
-	void set_vertex(int n) {
-		Graph.resize(n);
-	}
-	void add_edge(int from, int to, int cap) {
-		edge ori = { to,cap,Graph[to].size() };
-		edge rev = { from,0,Graph[from].size() };
-		Graph[from].push_back(ori);
-		Graph[to].push_back(rev);
-	}
-	void set_source_and_sink(int s, int t) {
-		source = s;
-		sink = t;
-	}
+	void set_vertex(int n);
+	void add_edge(int from, int to, int cap);
+	void set_source_and_sink(int s, int t);
 };
+
+
+struct droneGraph : flowGraph {
+private:
+	int X, Y, Z, T;
+	int idx(int x, int y, int z, int t);
+	int in(int idx);
+	int out(int idx);
+public:
+	droneGraph(int x, int y, int z, int t);
+	void set_startpoint(int x, int y, int z);
+	void set_endpoint(int x, int y, int z);
+};
+struct point {
+	int x, y, z;
+};
+#line 4 "c:\\users\\nein\\source\\repos\\push_relabel_cuda\\flow_test\\pushrelabel.h"
 
 std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph_h);
 
 
-#line 33 "c:\\users\\nein\\source\\repos\\push_relabel_cuda\\flow_test\\pushrelabel.h"
+#line 9 "c:\\users\\nein\\source\\repos\\push_relabel_cuda\\flow_test\\pushrelabel.h"
 #line 12 "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu"
 
 
@@ -211476,7 +211484,6 @@ __declspec(__global__) void push_relabel_kernel(edge* graph, int* startIdx, int*
 			int neighborMinHeight = ((int)__longlong_as_double(0x7ff0000000000000ULL)) / 2;
 
 			
-			int i = 0;
 			int size = startIdx[u + 1] - startIdx[u];
 			for (int i = 0; i < size; i++) {
 				const edge& e = graph[startIdx[u] + i];
@@ -211592,9 +211599,9 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	edge* graph_d;
 	int* startIdx_d;
 
-	{ cudaAssert((cudaMalloc((void**)&excessFlow_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 176); };
-	{ cudaAssert((cudaMalloc((void**)&height_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 177); };
-	{ cudaAssert((cudaMalloc((void**)&startIdx_d, sizeof(int)*(n + 1))), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 178); };
+	{ cudaAssert((cudaMalloc((void**)&excessFlow_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 175); };
+	{ cudaAssert((cudaMalloc((void**)&height_d, sizeof(int)*n)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 176); };
+	{ cudaAssert((cudaMalloc((void**)&startIdx_d, sizeof(int)*(n + 1))), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 177); };
 
 	int sum = 0;
 
@@ -211603,10 +211610,10 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 		sum += graph.Graph[i].size();
 		startIdx_h[i + 1] = sum;
 	}
-	{ cudaAssert((cudaMemcpy(startIdx_d, startIdx_h, sizeof(int)*(n + 1), cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 187); };
+	{ cudaAssert((cudaMemcpy(startIdx_d, startIdx_h, sizeof(int)*(n + 1), cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 186); };
 
 	graph_h = (edge*)malloc(sizeof(edge)*sum);
-	{ cudaAssert((cudaMalloc((void**)&graph_d, sizeof(edge)*sum)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 190); };
+	{ cudaAssert((cudaMalloc((void**)&graph_d, sizeof(edge)*sum)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 189); };
 
 	
 	init_flow(&graph, height_h, excessFlow_h, &excessTotal, marked, n, source, sink);
@@ -211617,8 +211624,8 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 			graph_h[startIdx_h[i] + j] = graph.Graph[i][j];
 		}
 	}
-	{ cudaAssert((cudaMemcpy(graph_d, graph_h, sizeof(edge)*sum, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 201); };
-	{ cudaAssert((cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int)*n, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 202); };
+	{ cudaAssert((cudaMemcpy(graph_d, graph_h, sizeof(edge)*sum, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 200); };
+	{ cudaAssert((cudaMemcpy(excessFlow_d, excessFlow_h, sizeof(int)*n, cudaMemcpyHostToDevice)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 201); };
 
 	while (excessFlow_h[source] + excessFlow_h[sink] < excessTotal) {
 		
@@ -211630,9 +211637,9 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 		push_relabel_kernel <<<numBlocks, threadsPerBlock >>> (graph_d, startIdx_d, height_d, excessFlow_d, n, source, sink);
 
 		
-		{ cudaAssert((cudaMemcpy(graph_h, graph_d, sizeof(edge)*sum, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 214); };
-		{ cudaAssert((cudaMemcpy(height_h, height_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 215); };
-		{ cudaAssert((cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 216); };
+		{ cudaAssert((cudaMemcpy(graph_h, graph_d, sizeof(edge)*sum, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 213); };
+		{ cudaAssert((cudaMemcpy(height_h, height_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 214); };
+		{ cudaAssert((cudaMemcpy(excessFlow_h, excessFlow_d, sizeof(int)*n, cudaMemcpyDeviceToHost)), "C:/Users/nein/source/repos/push_relabel_cuda/flow_test/pushrelabel.cu", 215); };
 
 		
 		global_relabel_cpu(graph_h, startIdx_h, height_h, excessFlow_h, &excessTotal, marked, n, source, sink);
