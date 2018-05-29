@@ -203,7 +203,7 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 	while (excessFlow_h[source] + excessFlow_h[sink] < excessTotal) {
 		//while(netFlowOutS_h!=netFlowInT_h){
 			//copy h from the CPU main memory to the CUDA global memory
-		cudaMemcpy(height_d, height_h, sizeof(int)*n, cudaMemcpyHostToDevice);
+		cudaCheckError(cudaMemcpy(height_d, height_h, sizeof(int)*n, cudaMemcpyHostToDevice));
 
 		//call push_relabel_kernel()
 		int numBlocks = UPDIV(n, threadsPerBlock.x);
@@ -225,5 +225,10 @@ std::pair<flowGraph, int> push_relabel_cuda(flowGraph graph) {
 		}
 	}
 
-	return { graph,excessFlow_h[sink] };
+	cudaCheckError(cudaFree(excessFlow_d));
+	cudaCheckError(cudaFree(height_d));
+	cudaCheckError(cudaFree(startIdx_d));
+	
+	cudaCheckError(cudaFree(graph_d));
+    return { graph,excessFlow_h[sink] };
 }

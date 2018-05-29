@@ -12,8 +12,8 @@ CC_FILES   := flowgraph.cpp main.cpp
 
 ARCH=$(shell uname | sed -e 's/-.*//g')
 OBJDIR=objs
-CXX=g++ -m64 -std=c++11 -fopenmp
-CXXFLAGS=-O3 -Wall -Wextra -g
+CXX=g++ -m64 -std=c++17 -fopenmp
+CXXFLAGS=-O2 -Wall -Wextra -g
 HOSTNAME=$(shell hostname)
 
 LIBS       :=

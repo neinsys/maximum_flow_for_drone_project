@@ -2,38 +2,26 @@
 #include<vector>
 #include<queue>
 #include<algorithm>
+#include "flowgraph.h"
 using std::vector;
 using std::pair;
 using lint = long long int;
 using pii = std::pair<int, int>;
 using std::queue;
+using edge = flowGraph::edge;
 const int INF = 0x7fffffff / 2;
 struct Dinic {
 
-	struct edge {
-		int to, cap, rev;
-		edge() {}
-		edge(int a, int b, int c) :to(a), cap(b), rev(c) {}
-	};
-	vector<vector<edge>> G;
+    flowGraph* G;
 	vector<int> level;
 	vector<int> iter;
 	int source;
 	int sink;
-	Dinic(int n, int source, int sink) :source(source), sink(sink) {
-		G.resize(n);
-		level.resize(n);
-		iter.resize(n);
+	Dinic(flowGraph* G) :G(G),source(G->source), sink(G->sink) {
+		level.resize(G->Graph.size());
+		iter.resize(G->Graph.size());
 	}
 
-
-	void add_edge(int from, int to, int cap)
-	{
-		edge e(to, cap, G[to].size());
-		edge re(from, 0, G[from].size());
-		G[from].push_back(e);
-		G[to].push_back(re);
-	}
 	bool bfs(int s) {
 		std::fill(level.begin(), level.end(), -1);
 		std::fill(iter.begin(), iter.end(), 0);
@@ -43,8 +31,8 @@ struct Dinic {
 		while (!que.empty()) {
 			int v = que.front();
 			que.pop();
-			for (int i = 0; i < G[v].size(); i++) {
-				edge & e = G[v][i];
+			for (int i = 0; i < G->Graph[v].size(); i++) {
+				edge & e = G->Graph[v][i];
 				if (e.cap > 0 && level[e.to] < 0) {
 					level[e.to] = level[v] + 1;
 					que.push(e.to);
@@ -55,13 +43,13 @@ struct Dinic {
 	}
 	int dfs(int v, int t, int f) {
 		if (v == t) return f;
-		for (int &i = iter[v]; i < G[v].size(); i++) {
-			edge &e = G[v][i];
+		for (int &i = iter[v]; i < G->Graph[v].size(); i++) {
+			edge &e = G->Graph[v][i];
 			if (e.cap > 0 && level[v] < level[e.to]) {
 				int d = dfs(e.to, t, std::min(f, e.cap));
 				if (d > 0) {
 					e.cap -= d;
-					G[e.to][e.rev].cap += d;
+					G->Graph[e.to][e.rev].cap += d;
 					return d;
 				}
 			}
