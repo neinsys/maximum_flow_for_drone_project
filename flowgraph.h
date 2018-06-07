@@ -45,6 +45,7 @@ private:
     bool isIn(int idx);
     bool isOut(int idx);
 public:
+    droneGraph();
 	droneGraph(int x, int y, int z, int t);
 	void set_startpoint(int x, int y, int z);
 	void set_endpoint(int x, int y, int z);

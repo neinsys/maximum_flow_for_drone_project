@@ -5,6 +5,7 @@
 #include<set>
 #include<tuple>
 #include<map>
+#include<omp.h>
 void flowGraph::set_vertex(int n) {
 	Graph.resize(n);
 }
@@ -20,6 +21,8 @@ void flowGraph::set_source_and_sink(int s, int t) {
 	source = s;
 	sink = t;
 }
+
+droneGraph::droneGraph(){}
 
 droneGraph::droneGraph(int X, int Y, int Z, int T) : X(X), Y(Y), Z(Z), T(T){
 	source = 0;

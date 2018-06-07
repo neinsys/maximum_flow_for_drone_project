@@ -1,4 +1,3 @@
-#include "pushrelabel.h"
 #include <cstdio>
 #include <cstdlib>
 #include <algorithm>
@@ -49,15 +48,6 @@ std::pair<double,double> testRandomFlowGraph(int numVx, int numEdge) {
 		A = ans;
         a=sec.count();
 	}
-	{
-		std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-		auto ans = push_relabel_cuda(P);
-		std::chrono::duration<double> sec = std::chrono::system_clock::now() - start;
-		std::chrono::microseconds micro = std::chrono::duration_cast<std::chrono::microseconds>(sec);
-		std::cout << "max flow(push relabel using cuda) : " << ans.second << " time : " << sec.count() << "ms" << std::endl;
-		B = ans.second;
-        b=sec.count();
-	}
 	if (A != B && numVx<=100000) {
 		std::cout << "error " << A << " and " << B << std::endl;
 		assert(A == B);
@@ -95,14 +85,6 @@ void fileReadTest(const char* filepath) {
 		std::chrono::microseconds micro = std::chrono::duration_cast<std::chrono::microseconds>(sec);
 		std::cout << "max flow(Dinic) : " << ans << " time : " << sec.count() << "ms" << std::endl;
 		A = ans;
-	}
-	{
-		std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-		auto ans = push_relabel_cuda(ret);
-		std::chrono::duration<double> sec = std::chrono::system_clock::now() - start;
-		std::chrono::microseconds micro = std::chrono::duration_cast<std::chrono::microseconds>(sec);
-		std::cout << "max flow(push relabel using cuda) : " << ans.second << " time : " << sec.count() << "ms" << std::endl;
-		B = ans.second;
 	}
 	if (A != B) {
 		std::cout << "error " << A << " and " << B << std::endl;
@@ -185,7 +167,7 @@ int main() {
 		std::chrono::duration<double> sec = std::chrono::system_clock::now() - start;
 		std::chrono::microseconds micro = std::chrono::duration_cast<std::chrono::microseconds>(sec);
 		std::cout << "max flow(Dinic) : " << ans << " time : " << sec.count() << "s" << std::endl;
-        auto paths= ((droneGraph*)D.G)->find_paths();
+        auto paths= G.find_paths();
         remove_collision(paths);
         printf("%d\n",check_collision(paths));
        /* for(path* p:paths){
