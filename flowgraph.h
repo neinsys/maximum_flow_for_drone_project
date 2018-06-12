@@ -31,6 +31,7 @@ struct path{
     node* head=NULL;
     node* tail=NULL;
     void add_node(point p);
+    int size();
     ~path();
 };
 

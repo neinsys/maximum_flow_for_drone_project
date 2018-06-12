@@ -80,6 +80,13 @@ void path::add_node(point p){
         tail=tmp;
     }
 }
+int path::size(){
+    int sz=0;
+    for(node* it=head;it!=NULL;it=it->next){
+        sz++;
+    }
+    return sz;
+}
 path::~path(){
     if(head!=NULL){
         node* it=head;
