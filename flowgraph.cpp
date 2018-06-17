@@ -243,10 +243,15 @@ void remove_collision(std::vector<path*> paths){
     }
 }
 
-std::vector<path*> merge_path(std::vector<std::vector<path*>> paths){
+std::vector<path*> merge_path(std::vector<std::vector<path*>> paths,int rest=0){
     std::vector<path*> ret= paths.front();
     for(int i=1;i<paths.size();i++){
         std::map<point,path*> map;
+        for(int i=0;i<rest;i++){
+            for(path* p:ret){
+                p->add_node(p->tail->p);
+            }
+        }
         for(path* p:ret){
             map[p->tail->p] = p;
         }
