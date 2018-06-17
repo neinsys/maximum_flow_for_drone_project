@@ -56,4 +56,5 @@ public:
 
 bool check_collision(std::vector<path*> paths);
 void remove_collision(std::vector<path*> paths);
+std::vector<path*> merge_path(std::vector<std::vector<path*>> paths);
 
