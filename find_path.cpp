@@ -3,6 +3,20 @@
 #include "Dinic.h"
 #include<stdio.h>
 #include<algorithm>
+#include<math.h>
+#include<stdlib.h>
+#include<iostream>
+int minimaxDiff(std::vector<point>& start,std::vector<point>& end){
+    int ret=0;
+    for(const point& p:start){
+        int diff=0x7fffffff;
+        for(const point& q:end){
+            diff=std::min(diff,std::max({abs(p.x-q.x),abs(p.y-q.y),abs(p.z-q.z)}));
+        }
+        ret=std::max(ret,diff);
+    }
+    return ret;
+}
 
 std::vector<path*> find_path(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
       if(start.size()!=end.size()){
@@ -10,8 +24,8 @@ std::vector<path*> find_path(std::vector<point> start,std::vector<point> end,int
             return {};
       }
       int N = start.size();
-      int left = 0;
-      int right = std::max({X,Y,Z});
+      int left = minimaxDiff(start,end);
+      int right = std::max({X,Y,Z,left});
       int t=0x7fffffff;
       droneGraph G;
       while(left<=right){
