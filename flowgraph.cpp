@@ -10,7 +10,7 @@ void flowGraph::set_vertex(int n) {
 	Graph.resize(n);
 }
 
-void flowGraph::add_edge(int from, int to, int cap,int cost) {
+void flowGraph::add_edge(int from, int to, int cap,int cost=0) {
 	edge ori = { to,cap,Graph[to].size(),cost };
 	edge rev = { from,0,Graph[from].size(),-cost };
 	Graph[from].push_back(ori);
