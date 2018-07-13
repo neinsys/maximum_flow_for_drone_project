@@ -29,7 +29,7 @@ std::pair<double,double> testRandomFlowGraph(int numVx, int numEdge) {
 		if (from == to)continue;
 	//	fprintf(fp, "%d %d %d\n", from, to, cap);
 		//std::cout << "edge : " << from << "->" << to << " : " << cap << std::endl;
-		ret.add_edge(from, to, cap);
+		ret.add_edge(from, to, cap,0);
 	//	D.add_edge(from, to, cap);
 	}
 	//fclose(fp);
@@ -71,7 +71,7 @@ void fileReadTest(const char* filepath) {
 		
 		if (from == to)continue;
 		std::cout << "edge : " << from << "->" << to << " : " << cap << std::endl;
-		ret.add_edge(from, to, cap);
+		ret.add_edge(from, to, cap,0);
 		//D.add_edge(from, to, cap);
 	}
 	std::cout << numVx << " and " << numEdge << " flow graph generate" << std::endl;
