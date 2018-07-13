@@ -10,9 +10,9 @@ void flowGraph::set_vertex(int n) {
 	Graph.resize(n);
 }
 
-void flowGraph::add_edge(int from, int to, int cap) {
-	edge ori = { to,cap,Graph[to].size() };
-	edge rev = { from,0,Graph[from].size() };
+void flowGraph::add_edge(int from, int to, int cap,int cost) {
+	edge ori = { to,cap,Graph[to].size(),cost };
+	edge rev = { from,0,Graph[from].size(),-cost };
 	Graph[from].push_back(ori);
 	Graph[to].push_back(rev);
 }
@@ -35,7 +35,7 @@ droneGraph::droneGraph(int X, int Y, int Z, int T) : X(X), Y(Y), Z(Z), T(T){
 		for (int x = 0; x < X; x++) {
 			for (int y = 0; y < Y; y++) {
 				for (int z = 0; z < Z; z++) {
-					add_edge(in(idx(x, y, z, t)), out(idx(x, y, z, t)), 1);
+					add_edge(in(idx(x, y, z, t)), out(idx(x, y, z, t)), 1,0);
 				}
 			}
 		}
@@ -54,8 +54,9 @@ droneGraph::droneGraph(int X, int Y, int Z, int T) : X(X), Y(Y), Z(Z), T(T){
 								int nx = x + dx;
 								int ny = y + dy;
 								int nz = z + dz;
+								int cost = abs(dx)+abs(dy)+abs(dz)+2;
 								if (inner(nx, ny, nz)) {
-									add_edge(out(idx(x, y, z, t)), in(idx(nx, ny, nz, t + 1)), 1);
+									add_edge(out(idx(x, y, z, t)), in(idx(nx, ny, nz, t + 1)), 1,cost);
 								}
 							}
 						}
@@ -107,11 +108,11 @@ bool point::operator<(const point& p)const{
 }
 
 void droneGraph::set_startpoint(int x, int y, int z) {
-	add_edge(source, in(idx(x, y, z, 0)),1);
+	add_edge(source, in(idx(x, y, z, 0)),1,0);
 }
 
 void droneGraph::set_endpoint(int x, int y, int z) {
-	add_edge(out(idx(x, y, z, T - 1)), sink, 1);
+	add_edge(out(idx(x, y, z, T - 1)), sink, 1,0);
 }
 bool droneGraph::isIn(int idx){
     return idx%2==1;
@@ -141,7 +142,8 @@ point droneGraph::getPoint(int idx){
 std::vector<path*> droneGraph::find_paths(){
     std::vector<path*> paths;
     for(const edge& e:Graph[sink]){
-        if(e.cap>=0){
+        if(e.cap>0){
+            point p=getPoint(e.to);
             std::vector<point> P;
             int idx=e.to;
             while(!(isIn(idx) && getTime(idx)==0)){

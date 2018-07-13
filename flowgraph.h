@@ -4,14 +4,14 @@
 struct flowGraph {
 	struct edge {
 		int to, cap;
-		int rev;
+		int rev,cost;
 	};
 	int source;
 	int sink;
 
 	std::vector<std::vector<edge>> Graph;
 	void set_vertex(int n);
-	void add_edge(int from, int to, int cap);
+	void add_edge(int from, int to, int cap,int cost);
 	void set_source_and_sink(int s, int t);
 };
 
