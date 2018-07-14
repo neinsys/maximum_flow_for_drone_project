@@ -21,33 +21,36 @@ int minimaxDiff(std::vector<point>& start,std::vector<point>& end){
     return ret;
 }
 
+bool disjointCheck(std::vector<point>& points){
+    std::set<point> set;
+    for(point& p:points){
+        if(set.count(p)){
+            return false;
+        }
+        set.insert(p);
+    }
+    return true;
+}
+
 std::vector<path*> find_path_using_dinic(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
       if(start.size()!=end.size()){
             fprintf(stderr,"not match between start point and end point\n");
             return {};
       }
-      int N = start.size();
+      int N = std::min(start.size(),end.size());
       int left = minimaxDiff(start,end);
       int right = std::max({X,Y,Z,left});
       int t=0x7fffffff;
       droneGraph G;
-      std::set<point> set;
-      for(point& p:start){
-          if(set.count(p)){
-              fprintf(stderr,"same point by start\n");
-              return {};
-          }
-          set.insert(p);
+      if(!disjointCheck(start)){
+          fprintf(stderr,"same point by start\n");
+          return {};
       }
-      set.clear();
+      if(!disjointCheck(end)){
+          fprintf(stderr,"same point by end\n");
+          return {};
+      }
 
-    for(point& p:end){
-        if(set.count(p)){
-            fprintf(stderr,"same point by end\n");
-            return {};
-        }
-        set.insert(p);
-    }
       while(left<=right){
             int mid=(left+right)/2;
             droneGraph tmp(X,Y,Z,mid);
@@ -90,22 +93,15 @@ std::vector<path*> find_path_using_mcmf(std::vector<point> start,std::vector<poi
     int T = std::max({X,Y,Z});
     droneGraph G(X,Y,Z,T);
     std::set<point> set;
-    for(point& p:start){
-        if(set.count(p)){
-            fprintf(stderr,"same point by start\n");
-            return {};
-        }
-        set.insert(p);
+    if(!disjointCheck(start)){
+        fprintf(stderr,"same point by start\n");
+        return {};
     }
-    set.clear();
+    if(!disjointCheck(end)){
+        fprintf(stderr,"same point by end\n");
+        return {};
+    }
 
-    for(point& p:end){
-        if(set.count(p)){
-            fprintf(stderr,"same point by end\n");
-            return {};
-        }
-        set.insert(p);
-    }
     for(const point& p:start){
         G.set_startpoint(p.x,p.y,p.z);
     }
@@ -127,27 +123,19 @@ std::vector<path*> find_path_using_mcmf_and_dinic(std::vector<point> start,std::
         fprintf(stderr,"not match between start point and end point\n");
         return {};
     }
-    int N = start.size();
+    int N = std::min(start.size(),end.size());
     int left = minimaxDiff(start,end);
     int right = std::max({X,Y,Z,left});
     int t=0x7fffffff;
-    std::set<point> set;
-    for(point& p:start){
-        if(set.count(p)){
-            fprintf(stderr,"same point by start\n");
-            return {};
-        }
-        set.insert(p);
+    if(!disjointCheck(start)){
+        fprintf(stderr,"same point by start\n");
+        return {};
     }
-    set.clear();
+    if(!disjointCheck(end)){
+        fprintf(stderr,"same point by end\n");
+        return {};
+    }
 
-    for(point& p:end){
-        if(set.count(p)){
-            fprintf(stderr,"same point by end\n");
-            return {};
-        }
-        set.insert(p);
-    }
     while(left<=right){
         int mid=(left+right)/2;
         droneGraph tmp(X,Y,Z,mid);

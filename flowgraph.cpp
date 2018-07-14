@@ -178,6 +178,7 @@ std::vector<path*> droneGraph::find_paths(){
 
         }
     }
+
     return paths;
 }
 
