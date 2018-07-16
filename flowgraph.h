@@ -19,20 +19,26 @@ struct flowGraph {
 struct point {
 	int x, y, z;
     bool operator==(const point& p)const;
+    bool operator!=(const point& p)const;
     bool operator<(const point& p)const;
 };
 
 struct node{
     point p;
+    node* prev;
     node* next;
 };
 
 struct path{
     node* head=NULL;
     node* tail=NULL;
+    int sz=0;
     void add_node(point p);
     int size();
     ~path();
+    void pop_front();
+    void pop_back();
+    void append(path* p);
 };
 
 struct droneGraph : flowGraph {
@@ -56,5 +62,5 @@ public:
 
 bool check_collision(std::vector<path*> paths);
 void remove_collision(std::vector<path*> paths);
-std::vector<path*> merge_path(std::vector<std::vector<path*>> paths,int rest);
+std::vector<path*> merge_path(std::vector<std::vector<path*>>& paths,int rest);
 

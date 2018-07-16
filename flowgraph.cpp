@@ -73,19 +73,18 @@ void path::add_node(point p){
     node* tmp = new node;
     tmp->p=p;
     tmp->next=NULL;
+    tmp->prev=NULL;
     if(head==NULL && tail==NULL){
         head=tail=tmp;
     }
     else{
+        tmp->prev=tail;
         tail->next=tmp;
         tail=tmp;
     }
+    sz++;
 }
 int path::size(){
-    int sz=0;
-    for(node* it=head;it!=NULL;it=it->next){
-        sz++;
-    }
     return sz;
 }
 path::~path(){
@@ -99,9 +98,32 @@ path::~path(){
     }
     head=tail=NULL;
 }
+void path::pop_front(){
+    node* tmp =head;
+    head =head->next;
+    head->prev=NULL;
+    delete tmp;
+    sz--;
+}
+void path::pop_back(){
+    node* tmp =tail;
+    tail =tail->prev;
+    tail->next=NULL;
+    delete tmp;
+    sz--;
+}
+void path::append(path* p){
+    tail->next=p->head;
+    p->head->prev=tail;
+    tail= p->tail;
+    sz+=p->sz;
+}
 
 bool point::operator==(const point& p)const{
     return x==p.x && y==p.y && z==p.z;
+}
+bool point::operator!=(const point& p)const{
+    return x!=p.x || y!=p.y || z!=p.z;
 }
 bool point::operator<(const point& p)const{
     return std::make_tuple(x,y,z) <std::make_tuple(p.x,p.y,p.z);
@@ -178,6 +200,19 @@ std::vector<path*> droneGraph::find_paths(){
 
         }
     }
+    while(paths.back()->size()>=2){
+        bool flag=false;
+        for(path* p:paths){
+            if(p->tail->p != p->tail->prev->p){
+                flag=true;
+                break;
+            }
+        }
+        if(flag)break;
+        for(path* p:paths){
+            p->pop_back();
+        }
+    }
 
     return paths;
 }
@@ -241,12 +276,13 @@ void remove_collision(std::vector<path*> paths){
                 node* two = col.back();
                 col.pop_back();
                 std::swap(one->next,two->next);
+                std::swap(one->next->prev,two->next->prev);
             }
         }
     }
 }
 
-std::vector<path*> merge_path(std::vector<std::vector<path*>> paths,int rest=0){
+std::vector<path*> merge_path(std::vector<std::vector<path*>>& paths,int rest=0){
     std::vector<path*> ret;
     if(!paths.empty())ret= paths.front();
     for(int i=1;i<paths.size();i++){
@@ -261,12 +297,11 @@ std::vector<path*> merge_path(std::vector<std::vector<path*>> paths,int rest=0){
         }
         for(path* q:paths[i]){
             path* p=map[q->head->p];
-            p->tail->next=q->head->next;
-            p->tail=q->tail;
-            free(q->head);
-            q->head=q->tail=NULL;
+            q->pop_front();
+            p->append(q);
             delete q;
         }
     }
+    paths.clear();
     return ret;
 }
