@@ -55,6 +55,7 @@ droneGraph::droneGraph(int X, int Y, int Z, int T) : X(X), Y(Y), Z(Z), T(T){
 								int ny = y + dy;
 								int nz = z + dz;
 								int cost = abs(dx)+abs(dy)+abs(dz)+2;
+                                if(cost==2) cost=0;
 								if (inner(nx, ny, nz)) {
 									add_edge(out(idx(x, y, z, t)), in(idx(nx, ny, nz, t + 1)), 1,cost);
 								}
