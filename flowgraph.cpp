@@ -119,6 +119,7 @@ void path::append(path* p){
     p->head->prev=tail;
     tail= p->tail;
     sz+=p->sz;
+    p->head=p->tail=NULL;
 }
 
 bool point::operator==(const point& p)const{
