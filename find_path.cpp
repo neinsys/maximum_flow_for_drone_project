@@ -31,8 +31,7 @@ bool disjointCheck(std::vector<point>& points){
     }
     return true;
 }
-
-std::vector<path*> find_path_using_dinic(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
+analysis find_path_using_dinic(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
       if(start.size()!=end.size()){
             fprintf(stderr,"not match between start point and end point\n");
             return {};
@@ -78,14 +77,15 @@ std::vector<path*> find_path_using_dinic(std::vector<point> start,std::vector<po
             return {};
       }
       std::vector<path*> paths = G.find_paths();
+      auto collisions = get_collision(paths);
       remove_collision(paths);
       if(check_collision(paths)){
             fprintf(stderr,"error : exist collision\n");
       }
-      return paths;
+      return {paths,collisions};
 }
 
-std::vector<path*> find_path_using_mcmf(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
+analysis find_path_using_mcmf(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
     if(start.size()!=end.size()){
         fprintf(stderr,"not match between start point and end point\n");
         return {};
@@ -111,14 +111,15 @@ std::vector<path*> find_path_using_mcmf(std::vector<point> start,std::vector<poi
     MCMF mcmf(&G);
     int flow = mcmf.flow().first;
     std::vector<path*> paths = G.find_paths();
+    auto collisions = get_collision(paths);
  //   remove_collision(paths);
     if(check_collision(paths)){
         fprintf(stderr,"error : exist collision\n");
     }
-    return paths;
+    return {paths,collisions};
 }
 
-std::vector<path*> find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
+analysis find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
     if(start.size()!=end.size()){
         fprintf(stderr,"not match between start point and end point\n");
         return {};
@@ -172,9 +173,10 @@ std::vector<path*> find_path_using_mcmf_and_dinic(std::vector<point> start,std::
     MCMF mcmf(&G);
     int flow = mcmf.flow().first;
     std::vector<path*> paths = G.find_paths();
+    auto collisions = get_collision(paths);
     //   remove_collision(paths);
     if(check_collision(paths)){
         fprintf(stderr,"error : exist collision\n");
     }
-    return paths;
+    return {paths,collisions};
 }

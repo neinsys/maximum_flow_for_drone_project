@@ -1,4 +1,5 @@
 #include "flowgraph.h"
+#include "find_path.h"
 #include<assert.h>
 #include<stdlib.h>
 #include<algorithm>
@@ -250,6 +251,25 @@ bool check_collision(std::vector<path*> paths){
     }
     return false;
 }
+std::vector<int> get_collision(std::vector<path*> paths){
+    std::map<std::pair<int,point>,int> map;
+    for(path* p:paths){
+        int t=0;
+        for(node* it=p->head;it->next!=NULL;it=it->next,t++){
+            int x=it->p.x+it->next->p.x;
+            int y=it->p.y+it->next->p.y;
+            int z=it->p.z+it->next->p.z;
+
+            map[{t,{x,y,z}}]++;
+        }
+    }
+    std::vector<int> cnt(5,0);
+    for(auto& p:map){
+        cnt[p.second]++;
+    }
+    return cnt;
+}
+
 int abss(int a){
     if(a<0)return -a;
     return a;
@@ -283,9 +303,9 @@ void remove_collision(std::vector<path*> paths){
     }
 }
 
-std::vector<path*> merge_path(std::vector<std::vector<path*>>& paths,int rest=0){
+std::vector<path*> merge_path(std::vector<analysis>& paths,int rest=0){
     std::vector<path*> ret;
-    if(!paths.empty())ret= paths.front();
+    if(!paths.empty())ret= paths.front().paths;
     for(int i=1;i<paths.size();i++){
         std::map<point,path*> map;
         for(int i=0;i<rest;i++){
@@ -296,7 +316,7 @@ std::vector<path*> merge_path(std::vector<std::vector<path*>>& paths,int rest=0)
         for(path* p:ret){
             map[p->tail->p] = p;
         }
-        for(path* q:paths[i]){
+        for(path* q:paths[i].paths){
             path* p=map[q->head->p];
             q->pop_front();
             p->append(q);

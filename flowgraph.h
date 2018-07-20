@@ -60,7 +60,13 @@ public:
 };
 
 
+struct analysis{
+	std::vector<path*> paths;
+	std::vector<int> collsions;
+};
+
 bool check_collision(std::vector<path*> paths);
 void remove_collision(std::vector<path*> paths);
-std::vector<path*> merge_path(std::vector<std::vector<path*>>& paths,int rest);
+std::vector<int> get_collision(std::vector<path*> paths);
+std::vector<path*> merge_path(std::vector<analysis>& paths,int rest);
 
