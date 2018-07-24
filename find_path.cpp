@@ -10,7 +10,7 @@
 
 #include<iostream>
 int minimaxDiff(std::vector<point>& start,std::vector<point>& end){
-    int ret=0;
+    int ret=1;
     for(const point& p:start){
         int diff=0x7fffffff;
         for(const point& q:end){
