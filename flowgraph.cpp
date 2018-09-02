@@ -132,12 +132,12 @@ bool point::operator<(const point& p)const{
     return std::make_tuple(x,y,z) <std::make_tuple(p.x,p.y,p.z);
 }
 
-void droneGraph::set_startpoint(int x, int y, int z) {
-	add_edge(source, in(idx(x, y, z, 0)),1,0);
+void droneGraph::set_startpoint(int x, int y, int z,int cost) {
+	add_edge(source, in(idx(x, y, z, 0)),1,cost);
 }
 
-void droneGraph::set_endpoint(int x, int y, int z) {
-	add_edge(out(idx(x, y, z, T - 1)), sink, 1,0);
+void droneGraph::set_endpoint(int x, int y, int z,int cost) {
+	add_edge(out(idx(x, y, z, T - 1)), sink, 1,cost);
 }
 bool droneGraph::isIn(int idx){
     return idx%2==1;
@@ -203,19 +203,8 @@ std::vector<path*> droneGraph::find_paths(){
 
         }
     }
-    while(paths.back()->size()>=2){
-        bool flag=false;
-        for(path* p:paths){
-            if(p->tail->p != p->tail->prev->p){
-                flag=true;
-                break;
-            }
-        }
-        if(flag)break;
-        for(path* p:paths){
-            p->pop_back();
-        }
-    }
+    printf("size : %d\n",paths.size());
+
 
     return paths;
 }
@@ -319,6 +308,9 @@ std::vector<path*> merge_path(std::vector<analysis>& paths,int rest=0){
         }
         for(path* q:paths[i].paths){
             path* p=map[q->head->p];
+            if(p==NULL){
+                fprintf(stderr,"error : not matching between two image");
+            }
             q->pop_front();
             p->append(q);
             delete q;

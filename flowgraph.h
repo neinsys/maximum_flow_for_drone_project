@@ -54,8 +54,8 @@ private:
 public:
     droneGraph();
 	droneGraph(int x, int y, int z, int t);
-	void set_startpoint(int x, int y, int z);
-	void set_endpoint(int x, int y, int z);
+	void set_startpoint(int x, int y, int z,int cost=0);
+	void set_endpoint(int x, int y, int z,int cost=0);
     std::vector<path*> find_paths();
 };
 
@@ -63,6 +63,8 @@ public:
 struct analysis{
 	std::vector<path*> paths;
 	std::vector<int> collsions;
+	long T_calc_time;
+	long P_calc_time;
 };
 
 bool check_collision(std::vector<path*> paths);
