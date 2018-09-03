@@ -65,6 +65,7 @@ struct analysis{
 	std::vector<int> collsions;
 	long T_calc_time;
 	long P_calc_time;
+	int Mx,My,Mz;
 };
 
 bool check_collision(std::vector<path*> paths);

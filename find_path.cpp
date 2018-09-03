@@ -109,7 +109,7 @@ analysis find_path_using_dinic(std::vector<point> start,std::vector<point> end,i
       if(check_collision(paths)){
             fprintf(stderr,"error : exist collision\n");
       }
-      return {paths,collisions,T_calcTime,P_calcTime};
+      return {paths,collisions,T_calcTime,P_calcTime,X,Y,Z};
 }
 
 analysis find_path_using_mcmf(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
@@ -148,7 +148,7 @@ analysis find_path_using_mcmf(std::vector<point> start,std::vector<point> end,in
     if(check_collision(paths)){
         fprintf(stderr,"error : exist collision\n");
     }
-    return {paths,collisions,0L,P_calcTime};
+    return {paths,collisions,0L,P_calcTime,X,Y,Z};
 }
 
 analysis find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<point> end,int X,int Y,int Z){
@@ -199,5 +199,5 @@ analysis find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<poi
     if(check_collision(paths)){
         fprintf(stderr,"error : exist collision\n");
     }
-    return {paths,collisions,T_calcTime,P_calcTime};
+    return {paths,collisions,T_calcTime,P_calcTime,X,Y,Z};
 }
