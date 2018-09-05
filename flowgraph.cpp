@@ -72,54 +72,10 @@ droneGraph::droneGraph(int X, int Y, int Z, int T) : X(X), Y(Y), Z(Z), T(T){
 }
 
 void path::add_node(point p){
-    node* tmp = new node;
-    tmp->p=p;
-    tmp->next=NULL;
-    tmp->prev=NULL;
-    if(head==NULL && tail==NULL){
-        head=tail=tmp;
-    }
-    else{
-        tmp->prev=tail;
-        tail->next=tmp;
-        tail=tmp;
-    }
-    sz++;
+    push_back(p);
 }
-int path::size(){
-    return sz;
-}
-path::~path(){
-    if(head!=NULL){
-        node* it=head;
-        while(it){
-            node* tmp=it;
-            it=it->next;
-            delete tmp;
-        }
-    }
-    head=tail=NULL;
-}
-void path::pop_front(){
-    node* tmp =head;
-    head =head->next;
-    head->prev=NULL;
-    delete tmp;
-    sz--;
-}
-void path::pop_back(){
-    node* tmp =tail;
-    tail =tail->prev;
-    tail->next=NULL;
-    delete tmp;
-    sz--;
-}
-void path::append(path* p){
-    tail->next=p->head;
-    p->head->prev=tail;
-    tail= p->tail;
-    sz+=p->sz;
-    p->head=p->tail=NULL;
+void path::append(path& p){
+    insert(end(),p.begin(),p.end());
 }
 
 bool point::operator==(const point& p)const{
@@ -164,8 +120,8 @@ point droneGraph::getPoint(int idx){
     int x=idx;
     return {x,y,z};
 }
-std::vector<path*> droneGraph::find_paths(){
-    std::vector<path*> paths;
+std::vector<path> droneGraph::find_paths(){
+    std::vector<path> paths;
     for(const edge& e:Graph[sink]){
         if(e.cap>0){
             point p=getPoint(e.to);
@@ -195,9 +151,9 @@ std::vector<path*> droneGraph::find_paths(){
             }
             std::reverse(P.begin(),P.end());
     
-            path* p_list=new path;
+            path p_list;
             for(point& p:P){
-                p_list->add_node(p);
+                p_list.add_node(p);
             }
             paths.push_back(p_list);
 
@@ -225,14 +181,14 @@ int droneGraph::out(int idx) {
 	return idx * 2;
 }
 
-bool check_collision(std::vector<path*> paths){
+bool check_collision(std::vector<path> paths){
     std::set<std::pair<int,point>> set;
-    for(path* p:paths){
+    for(path p:paths){
         int t=0;
-        for(node* it=p->head;it->next!=NULL;it=it->next,t++){
-            int x=it->p.x+it->next->p.x;
-            int y=it->p.y+it->next->p.y;
-            int z=it->p.z+it->next->p.z;
+        for(auto it=p.begin();std::next(it)!=p.end();it=std::next(it),t++){
+            int x=it->x+std::next(it)->x;
+            int y=it->y+std::next(it)->y;
+            int z=it->z+std::next(it)->z;
             if(set.count({t,{x,y,z}})){
                 return true;
             }
@@ -241,14 +197,14 @@ bool check_collision(std::vector<path*> paths){
     }
     return false;
 }
-std::vector<int> get_collision(std::vector<path*> paths){
+std::vector<int> get_collision(const std::vector<path>& paths){
     std::map<std::pair<int,point>,int> map;
-    for(path* p:paths){
+    for(path p:paths){
         int t=0;
-        for(node* it=p->head;it->next!=NULL;it=it->next,t++){
-            int x=it->p.x+it->next->p.x;
-            int y=it->p.y+it->next->p.y;
-            int z=it->p.z+it->next->p.z;
+        for(auto it=p.begin();std::next(it)!=p.end();it=std::next(it),t++){
+            int x=it->x+std::next(it)->x;
+            int y=it->y+std::next(it)->y;
+            int z=it->z+std::next(it)->z;
 
             map[{t,{x,y,z}}]++;
         }
@@ -264,58 +220,59 @@ int abss(int a){
     if(a<0)return -a;
     return a;
 }
-void remove_collision(std::vector<path*> paths){
+void remove_collision(std::vector<path>& paths){
     for(int D=3;D>=1;D--){
-        std::map<std::pair<int,point>,std::vector<node*>> map;
-        for(path* p:paths){
-            int t=0;
-            for(node* it=p->head;it->next!=NULL;it=it->next,t++){
-                int x=it->p.x+it->next->p.x;
-                int y=it->p.y+it->next->p.y;
-                int z=it->p.z+it->next->p.z;
-                int d=abss(it->p.x-it->next->p.x)+abss(it->p.y-it->next->p.y)+abss(it->p.z-it->next->p.z);
-                if(D==d){
-                    map[{t,{x,y,z}}].push_back(it);
+        for(int i=0;i<paths.size();i++){
+            for(int j=i+1;j<paths.size();j++){
+                int T=(int)paths[i].size()-1;
+                for(int t=0;t<T;t++){
+                    int x1 = paths[i][t].x + paths[i][t+1].x;
+                    int y1 = paths[i][t].y + paths[i][t+1].y;
+                    int z1 = paths[i][t].z + paths[i][t+1].z;
+
+                    int x2 = paths[j][t].x + paths[j][t+1].x;
+                    int y2 = paths[j][t].y + paths[j][t+1].y;
+                    int z2 = paths[j][t].z + paths[j][t+1].z;
+
+                    int d = abss(paths[i][t].x - paths[i][t+1].x) +
+                            abss(paths[i][t].y - paths[i][t+1].y) +
+                            abss(paths[i][t].z - paths[i][t+1].z);
+
+                    if(x1 == x2 && y1 == y2 && z1 == z2 && D == d){
+                        for(int p=t+1;p<=T;p++){
+                            std::swap(paths[i][p],paths[j][p]);
+                        }
+                    }
+
                 }
-            }
-        }
-        for(auto& p : map){
-            auto& col = p.second;
-            while(col.size()>=2){
-                node* one = col.back();
-                col.pop_back();
-                node* two = col.back();
-                col.pop_back();
-                std::swap(one->next,two->next);
-                std::swap(one->next->prev,two->next->prev);
+
             }
         }
     }
 }
 
-std::vector<path*> merge_path(std::vector<analysis>& paths,int rest=0){
-    std::vector<path*> ret;
+std::vector<path> merge_path(std::vector<analysis>& paths,int rest=0){
+    std::vector<path> ret;
     if(!paths.empty())ret= paths.front().paths;
-    for(int i=1;i<paths.size();i++){
-        std::map<point,path*> map;
+    for(int k=1;k<(int)paths.size();k++){
+        std::map<point,int> map;
         for(int i=0;i<rest;i++){
-            for(path* p:ret){
-                p->add_node(p->tail->p);
+            for(path p:ret){
+                p.push_back(p.back());
             }
         }
-        for(path* p:ret){
-            map[p->tail->p] = p;
+        for(int i=0;i<ret.size();i++){
+            map[ret[i].back()] = i;
         }
-        for(path* q:paths[i].paths){
-            path* p=map[q->head->p];
-            if(p==NULL){
+
+        for(path q:paths[k].paths){
+            if(map.count(q.front())==0){
                 fprintf(stderr,"error : not matching between two image");
             }
-            q->pop_front();
-            p->append(q);
-            delete q;
+            int p=map[q.front()];
+            q.erase(q.begin());
+            ret[p].append(q);
         }
     }
-    paths.clear();
     return ret;
 }

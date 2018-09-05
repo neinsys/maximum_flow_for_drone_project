@@ -103,7 +103,7 @@ analysis find_path_using_dinic(std::vector<point> start,std::vector<point> end,i
       milliseconds Pcalc = duration_cast<milliseconds>(end_t-start_t);
       long P_calcTime = Pcalc.count();
 
-      std::vector<path*> paths = G.find_paths();
+      std::vector<path> paths = G.find_paths();
       auto collisions = get_collision(paths);
       remove_collision(paths);
       if(check_collision(paths)){
@@ -142,7 +142,7 @@ analysis find_path_using_mcmf(std::vector<point> start,std::vector<point> end,in
     milliseconds Pcalc = duration_cast<milliseconds>(end_t-start_t);
     long P_calcTime = Pcalc.count();
 
-    std::vector<path*> paths = G.find_paths();
+    std::vector<path> paths = G.find_paths();
     auto collisions = get_collision(paths);
  //   remove_collision(paths);
     if(check_collision(paths)){
@@ -193,7 +193,7 @@ analysis find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<poi
     long P_calcTime = Pcalc.count();
 
 
-    std::vector<path*> paths = G.find_paths();
+    std::vector<path> paths = G.find_paths();
     auto collisions = get_collision(paths);
     //   remove_collision(paths);
     if(check_collision(paths)){

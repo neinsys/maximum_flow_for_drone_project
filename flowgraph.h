@@ -23,22 +23,10 @@ struct point {
     bool operator<(const point& p)const;
 };
 
-struct node{
-    point p;
-    node* prev;
-    node* next;
-};
 
-struct path{
-    node* head=NULL;
-    node* tail=NULL;
-    int sz=0;
+struct path : std::vector<point>{
     void add_node(point p);
-    int size();
-    ~path();
-    void pop_front();
-    void pop_back();
-    void append(path* p);
+    void append(path& p);
 };
 
 struct droneGraph : flowGraph {
@@ -56,20 +44,20 @@ public:
 	droneGraph(int x, int y, int z, int t);
 	void set_startpoint(int x, int y, int z,int cost=0);
 	void set_endpoint(int x, int y, int z,int cost=0);
-    std::vector<path*> find_paths();
+    std::vector<path> find_paths();
 };
 
 
 struct analysis{
-	std::vector<path*> paths;
+	std::vector<path> paths;
 	std::vector<int> collsions;
 	long T_calc_time;
 	long P_calc_time;
 	int Mx,My,Mz;
 };
 
-bool check_collision(std::vector<path*> paths);
-void remove_collision(std::vector<path*> paths);
-std::vector<int> get_collision(std::vector<path*> paths);
-std::vector<path*> merge_path(std::vector<analysis>& paths,int rest);
+bool check_collision(std::vector<path> paths);
+void remove_collision(std::vector<path>& paths);
+std::vector<int> get_collision(const std::vector<path>&  paths);
+std::vector<path> merge_path(std::vector<analysis>& paths,int rest);
 
