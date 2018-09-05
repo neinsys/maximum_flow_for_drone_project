@@ -159,7 +159,6 @@ std::vector<path> droneGraph::find_paths(){
 
         }
     }
-    printf("size : %d\n",paths.size());
 
 
     return paths;
@@ -222,10 +221,10 @@ int abss(int a){
 }
 void remove_collision(std::vector<path>& paths){
     for(int D=3;D>=1;D--){
-        for(int i=0;i<paths.size();i++){
-            for(int j=i+1;j<paths.size();j++){
-                int T=(int)paths[i].size()-1;
-                for(int t=0;t<T;t++){
+        int T=(int)paths[0].size()-1;
+        for(int t=0;t<T;t++){
+            for(int i=0;i<(int)paths.size();i++){
+                for(int j=i+1;j<(int)paths.size();j++){
                     int x1 = paths[i][t].x + paths[i][t+1].x;
                     int y1 = paths[i][t].y + paths[i][t+1].y;
                     int z1 = paths[i][t].z + paths[i][t+1].z;
@@ -239,6 +238,7 @@ void remove_collision(std::vector<path>& paths){
                             abss(paths[i][t].z - paths[i][t+1].z);
 
                     if(x1 == x2 && y1 == y2 && z1 == z2 && D == d){
+
                         for(int p=t+1;p<=T;p++){
                             std::swap(paths[i][p],paths[j][p]);
                         }
