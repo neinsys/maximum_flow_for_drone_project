@@ -49,7 +49,7 @@ int getTimeofDroneGraph(std::vector<point>& start,std::vector<point>& end,int X,
         for(const point& p:end){
             tmp.set_endpoint(p.x,p.y,p.z);
         }
-        Dinic D(&tmp);
+        Dinic D(tmp);
         int flow = D.flow();
         if(flow==N){
             if(t>mid){
@@ -95,7 +95,7 @@ analysis find_path_using_dinic(std::vector<point> start,std::vector<point> end,i
       for(const point& p:end){
           G.set_endpoint(p.x,p.y,p.z,0);
       }
-      Dinic D(&G);
+      Dinic D(G);
 
       start_t = system_clock::now();
       int flow = D.flow();
@@ -103,7 +103,7 @@ analysis find_path_using_dinic(std::vector<point> start,std::vector<point> end,i
       milliseconds Pcalc = duration_cast<milliseconds>(end_t-start_t);
       long P_calcTime = Pcalc.count();
 
-      std::vector<path> paths = G.find_paths();
+      std::vector<path> paths = D.G.find_paths();
       auto collisions = get_collision(paths);
       paths = remove_collision(paths);
       if(check_collision(paths)){
@@ -135,14 +135,14 @@ analysis find_path_using_mcmf(std::vector<point> start,std::vector<point> end,in
     for(const point& p:end){
         G.set_endpoint(p.x,p.y,p.z);
     }
-    MCMF mcmf(&G);
+    MCMF mcmf(G);
     system_clock::time_point start_t = system_clock::now();
     int flow = mcmf.flow().first;
     system_clock::time_point end_t = system_clock::now();
     milliseconds Pcalc = duration_cast<milliseconds>(end_t-start_t);
     long P_calcTime = Pcalc.count();
 
-    std::vector<path> paths = G.find_paths();
+    std::vector<path> paths = mcmf.G.find_paths();
     auto collisions = get_collision(paths);
  //   remove_collision(paths);
     if(check_collision(paths)){
@@ -184,7 +184,7 @@ analysis find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<poi
             }
         }
     }
-    MCMF mcmf(&G);
+    MCMF mcmf(G);
 
     start_t = system_clock::now();
     int flow = mcmf.flow().first;
@@ -193,7 +193,7 @@ analysis find_path_using_mcmf_and_dinic(std::vector<point> start,std::vector<poi
     long P_calcTime = Pcalc.count();
 
 
-    std::vector<path> paths = G.find_paths();
+    std::vector<path> paths = mcmf.G.find_paths();
     auto collisions = get_collision(paths);
     //   remove_collision(paths);
     if(check_collision(paths)){

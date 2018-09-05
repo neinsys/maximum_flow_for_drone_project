@@ -13,12 +13,12 @@ using std::vector;
 using std::pair;
 
 
-MCMF::MCMF(flowGraph* G) :G(G),source(G->source), sink(G->sink) {
-    dist.resize(G->Graph.size());
-    chk.resize(G->Graph.size());
-    from.resize(G->Graph.size(), { -1,-1 });
-    level.resize(G->Graph.size());
-    iter.resize(G->Graph.size());
+MCMF::MCMF(droneGraph G) :G(G),source(G.source), sink(G.sink) {
+    dist.resize(G.Graph.size());
+    chk.resize(G.Graph.size());
+    from.resize(G.Graph.size(), { -1,-1 });
+    level.resize(G.Graph.size());
+    iter.resize(G.Graph.size());
 }
 
 void MCMF::getPotential() {
@@ -34,9 +34,9 @@ void MCMF::getPotential() {
         int idx = que.front();
         que.pop();
         chk[idx] = false;
-        for (int i = 0; i < G->Graph[idx].size(); i++) {
-            auto& e = G->Graph[idx][i];
-            int to = G->Graph[idx][i].to;
+        for (int i = 0; i < (int)G.Graph[idx].size(); i++) {
+            auto& e = G.Graph[idx][i];
+            int to = G.Graph[idx][i].to;
             if (e.cap > 0 && dist[to] > dist[idx] + e.cost) {
                 dist[to] = dist[idx] + e.cost;
                 level[to] = level[idx] + 1;
@@ -67,8 +67,8 @@ bool MCMF::dijkstra() {
         if (chk[idx])continue;
         chk[idx] = true;
 
-        for (int i = 0; i < G->Graph[idx].size(); i++) {
-            auto& e = G->Graph[idx][i];
+        for (int i = 0; i < (int)G.Graph[idx].size(); i++) {
+            auto& e = G.Graph[idx][i];
             if (e.cap > 0 && dist[e.to] > dist[idx] + e.cost - pi[e.to] + pi[idx]) {
                 assert(!chk[e.to]);
                 dist[e.to] = dist[idx] + e.cost - pi[e.to] + pi[idx];
@@ -90,13 +90,13 @@ bool MCMF::dijkstra() {
 }
 int MCMF::dfs(int v, int t, int f) {
     if (v == t) return f;
-    for (int &i = iter[v]; i < G->Graph[v].size(); i++) {
-        auto &e = G->Graph[v][i];
+    for (int &i = iter[v]; i < (int)G.Graph[v].size(); i++) {
+        auto &e = G.Graph[v][i];
         if (e.cap > 0 && dist[v] + e.cost - pi[e.to] + pi[v] == 0 && level[v] < level[e.to]) {
             int d = dfs(e.to, t, std::min(f, e.cap));
             if (d > 0) {
                 e.cap -= d;
-                G->Graph[e.to][e.rev].cap += d;
+                G.Graph[e.to][e.rev].cap += d;
                 return d;
             }
         }
@@ -117,7 +117,7 @@ pair<int, int> MCMF::flow() {
             total_cap += f;
             total_cost += f*(dist[sink] + pi[sink] - pi[source]);
         }
-        for (int i = 0; i < dist.size(); i++) {
+        for (int i = 0; i < (int)dist.size(); i++) {
             if (dist[i] < INF)
                 pi[i] += dist[i];
         }

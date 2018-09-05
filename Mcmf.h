@@ -14,7 +14,7 @@ using std::pair;
 
 
 struct MCMF {
-	flowGraph* G;
+	droneGraph G;
 	vector<int> dist;
 	vector<int> chk;
 	vector<pair<int, int>> from;
@@ -23,7 +23,7 @@ struct MCMF {
 	vector<int> iter;
 	int source, sink;
 	const int INF = 0x7fffffff / 2;
-	MCMF(flowGraph* G);
+	MCMF(droneGraph G);
 	void getPotential();
 	bool dijkstra() ;
 	int dfs(int v, int t, int f);
