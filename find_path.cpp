@@ -105,7 +105,7 @@ analysis find_path_using_dinic(std::vector<point> start,std::vector<point> end,i
 
       std::vector<path> paths = G.find_paths();
       auto collisions = get_collision(paths);
-      remove_collision(paths);
+      paths = remove_collision(paths);
       if(check_collision(paths)){
             fprintf(stderr,"error : exist collision\n");
       }

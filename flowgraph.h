@@ -57,7 +57,7 @@ struct analysis{
 };
 
 bool check_collision(std::vector<path> paths);
-void remove_collision(std::vector<path>& paths);
+std::vector<path> remove_collision(std::vector<path> paths);
 std::vector<int> get_collision(const std::vector<path>&  paths);
 std::vector<path> merge_path(std::vector<analysis>& paths,int rest);
 

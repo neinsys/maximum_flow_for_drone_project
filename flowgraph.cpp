@@ -219,7 +219,7 @@ int abss(int a){
     if(a<0)return -a;
     return a;
 }
-void remove_collision(std::vector<path>& paths){
+std::vector<path> remove_collision(std::vector<path> paths){
     for(int D=3;D>=1;D--){
         int T=(int)paths[0].size()-1;
         for(int t=0;t<T;t++){
@@ -249,6 +249,7 @@ void remove_collision(std::vector<path>& paths){
             }
         }
     }
+    return paths;
 }
 
 std::vector<path> merge_path(std::vector<analysis>& paths,int rest=0){
