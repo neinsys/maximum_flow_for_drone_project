@@ -8,6 +8,5 @@ if(OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_executable(find_path_test main.cpp flowgraph.cpp Dinic.cpp Mcmf.cpp)
 
 add_library(find_path find_path.cpp flowgraph.cpp Dinic.cpp Mcmf.cpp)

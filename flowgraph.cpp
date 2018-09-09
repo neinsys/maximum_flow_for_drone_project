@@ -74,7 +74,7 @@ droneGraph::droneGraph(int X, int Y, int Z, int T) : X(X), Y(Y), Z(Z), T(T){
 void path::add_node(point p){
     push_back(p);
 }
-void path::append(path& p){
+void path::append(path p){
     insert(end(),p.begin(),p.end());
 }
 
@@ -183,11 +183,10 @@ int droneGraph::out(int idx) {
 bool check_collision(std::vector<path> paths){
     std::set<std::pair<int,point>> set;
     for(path p:paths){
-        int t=0;
-        for(auto it=p.begin();std::next(it)!=p.end();it=std::next(it),t++){
-            int x=it->x+std::next(it)->x;
-            int y=it->y+std::next(it)->y;
-            int z=it->z+std::next(it)->z;
+        for(int t=0;t+1<p.size();t++){
+            int x = p[t].x + p[t+1].x;
+            int y = p[t].y + p[t+1].y;
+            int z = p[t].z + p[t+1].z;
             if(set.count({t,{x,y,z}})){
                 return true;
             }
@@ -196,20 +195,18 @@ bool check_collision(std::vector<path> paths){
     }
     return false;
 }
-std::vector<int> get_collision(const std::vector<path>& paths){
+std::vector<int> get_collision(std::vector<path> paths){
     std::map<std::pair<int,point>,int> map;
     for(path p:paths){
-        int t=0;
-        for(auto it=p.begin();std::next(it)!=p.end();it=std::next(it),t++){
-            int x=it->x+std::next(it)->x;
-            int y=it->y+std::next(it)->y;
-            int z=it->z+std::next(it)->z;
-
+        for(int t=0;t+1<p.size();t++){
+            int x = p[t].x + p[t+1].x;
+            int y = p[t].y + p[t+1].y;
+            int z = p[t].z + p[t+1].z;
             map[{t,{x,y,z}}]++;
         }
     }
-    std::vector<int> cnt(5,0);
-    for(auto& p:map){
+    std::vector<int> cnt(9,0);
+    for(auto p:map){
         cnt[p.second]++;
     }
     return cnt;

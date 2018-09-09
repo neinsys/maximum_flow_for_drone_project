@@ -26,7 +26,7 @@ struct point {
 
 struct path : std::vector<point>{
     void add_node(point p);
-    void append(path& p);
+    void append(path p);
 };
 
 struct droneGraph : flowGraph {
@@ -58,6 +58,6 @@ struct analysis{
 
 bool check_collision(std::vector<path> paths);
 std::vector<path> remove_collision(std::vector<path> paths);
-std::vector<int> get_collision(const std::vector<path>&  paths);
+std::vector<int> get_collision(const std::vector<path>  paths);
 std::vector<path> merge_path(std::vector<analysis>& paths,int rest);
 
