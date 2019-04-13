@@ -1,2 +1,4 @@
-# push_relabel_cuda
-find maximum flow using push relabel algorithm in CUDA
+# maximum flow algorithm
+Dinic
+MCMF using dijkstra
+push relabel using cuda
